@@ -1,0 +1,12 @@
+#login-form{
+    margin-top: 50px;
+}
+#login-form > div > label, #login-form > div > .left-wrapper{
+    width: 120px;
+}
+#login-form > div > div.validation-message{
+    padding-left: 130px;
+}
+#logout-box{
+    margin-top: 50px;
+}

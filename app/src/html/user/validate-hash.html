@@ -1,0 +1,19 @@
+    <div id="login-form" class="content-box form">
+        <h3>
+            Password reset
+        </h3>
+        <p>
+            Please type the hash that you received by Email in order to enable the 
+            password reset.
+        </p>
+        <div class="ui-control textarea" type="text" name="hash"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('validate hash') %>
+            <%= $w.cancelButton() %>
+        </div>
+    </div>

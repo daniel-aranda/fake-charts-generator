@@ -1,0 +1,159 @@
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./commons/footer.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl commons_footer">Footer</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./commons/header.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl commons_header"><div id="user-bar"><%= obj.name %> - <a href="#logout">logout</a></div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./controls/form/formelement.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl form_formelement">    <label><%= obj.field %></label>
+    <div class="control"></div>
+    <div class="validation-message"></div>
+</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./controls/form/textarea.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl form_textarea"><textarea></textarea></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./controls/form/textfield.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl form_textfield"><input type="text" /></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./controls/popup/alert.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl popup_alert"><div class="alert_message">
+    <img src="/assets/icons/error.png" class="alert_error_icon" />
+    <div class="alert_error_message"><%= content %></div>
+</div>
+<br/>
+<div class="buttons one_button">
+    <div class='sailthru-ui component_button ok'>
+        <%= button_label %>
+    </div>
+</div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./controls/popup/window.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl popup_window"><div class='window_header'>
+    <span class="window_title"><%= title %></span>
+    <div class="window_close">x</div>
+</div>
+<div class="window_content">
+</div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./layout/default.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl layout_default"><div id="overlay" ></div>
+<div id="layout" class="default">
+    <div class="header-holder"></div>
+    <div class="content-holder"></div>
+    <div class="footer-holder"></div>
+</div>
+<div id="loader">
+    <div>
+        hi
+    </div>
+</div>      </script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./login/login.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl login_login">    <div id="login-form" class="content-box form">
+        
+        <div class="ui-control textfield" name="email"></div>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <input type="button" class="submit" value="login" />
+        </div>
+        <hr />
+        <div>
+            <label>&nbsp; </label>
+            <a href="#forgot-password">forgot password?</a>
+        </div>
+    </div>
+</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./login/logout.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl login_logout">    <div>
+        logout
+    </div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./project/index.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl project_index">    <div class="content-box">
+        Project 1 \o/
+    </div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./start/start.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl start_start">    <div class="content-box">
+        Your Projects
+    </div></script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./user/forgot-password.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl user_forgot-password">    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="email" name="email"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <input type="button" class="submit" value="send verification email" />
+        </div>
+    </div>
+</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./user/register.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl user_register"><div id="login-form" class="content-box form">
+    
+    <div class="ui-control textfield" name="email"></div>
+    <div class="ui-control textfield" type="password" name="password"></div>
+    
+    <div>
+        <div class="form_errors validation-message"></div>
+    </div>
+    <div>
+        <label>&nbsp; </label>
+        <input type="button" class="submit" value="create" />
+    </div>
+</div>
+</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./user/reset-password.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl user_reset-password">    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        <div class="ui-control textfield" type="password" name="confirm_password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <input type="button" class="submit" value="set new password" />
+        </div>
+    </div>
+</script>
+
+<!--File: C:\Users\Daniel Aranda\Documents\vhosts\worklikeplaychess.com\workflow/../app/src/html/./user/validate-hash.html-->
+<script type="text/x-DanielAranda-tpl" class="tpl user_validate-hash">    <div id="login-form" class="content-box form">
+        <h3>
+            Password reset
+        </h3>
+        <p>
+            Please type the hash that you received by Email in order to enable the 
+            password reset.
+        </p>
+        <div class="ui-control textarea" type="text" name="hash"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <input type="button" class="submit" value="validate hash" />
+        </div>
+    </div>
+</script>
+

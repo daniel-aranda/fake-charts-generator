@@ -1,0 +1,78 @@
+input, textarea, select, button{
+    outline: none;
+}
+
+button{
+    padding: 5px 12px;
+    border-radius: 3px;
+    border: 1px solid;
+}
+
+input, textarea{
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid;
+    border-color: #C3CEED;
+}
+input:focus, textarea:focus{
+    border-color: #708BD3;
+}
+
+button[type="submit"]{
+    background: #3AC243;
+    color: #ffffff;
+    border-color: #02A60D;
+}
+button:focus{
+    border-color: #007708;
+}
+button.cancel-button{
+    background: #CFCFCD;
+    color: #68696A;
+    border-color: #B4B4B6;
+}
+button.cancel-button:focus{
+    border-color: #68696A;
+}
+
+a{
+    color: #295DE1;
+    text-decoration: none;
+}
+a:hover{
+    text-decoration: underline;
+}
+
+.form{
+}
+
+.form > div{
+    margin: 10px 0;
+}
+
+.form > div > div.control-container{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.form > div > label, .form > div > .left-wrapper{
+    display: inline-block;
+    text-align: right;
+    padding-right: 5px;
+    font-weight: bold;
+    color: #636364;
+}
+
+.form > div > div.validation-message{
+    color: #DF0000;
+    font-weight: bold;
+}
+
+.form input.validation-error, .form textarea.validation-error{
+    border-color: #DF0000;
+}
+
+.form > div.checkbox > label{
+    text-align: left;
+    padding-left: 5px;
+}

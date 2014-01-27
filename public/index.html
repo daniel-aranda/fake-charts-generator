@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Work Like Play Chess!</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="stylesheet" href="http://assets.sandbox.fake-charts-generator/css/normalize.min.css">
+        <link rel="stylesheet" href="http://assets.sandbox.fake-charts-generator/css/main.css">
+        <link rel="stylesheet" href="http://assets.sandbox.fake-charts-generator/fcg/fcg_.css">
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <div class="view-holder"></div>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        <script src="http://assets.sandbox.fake-charts-generator/js/plugins.js"></script>
+        
+        <script src="http://assets.sandbox.fake-charts-generator/fcg/fcg_.js"></script>
+        <script>
+            $(function(){
+                
+                $w.global.assetsUrl = 'http://assets.sandbox.worklikeplaychess.com/';
+            
+                $w.tpl.loadTemplates('templates/fcg_.html');
+                $w.Application.initialize();
+            });
+        </script>
+    </body>
+</html>

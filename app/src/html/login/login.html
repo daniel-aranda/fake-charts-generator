@@ -1,0 +1,20 @@
+    <div id="login-form" class="content-box form">
+        
+        <div class="ui-control textfield" type="email" name="email"></div>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('login') %>
+        </div>
+        <div class="ui-control checkbox" name="remember_email"></div>
+        <div class="ui-control checkbox" name="remember_password"></div>
+        <hr />
+        <div>
+            <label>&nbsp; </label>
+            <a href="#forgot-password">forgot password?</a>
+        </div>
+    </div>
