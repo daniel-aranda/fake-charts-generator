@@ -56,7 +56,7 @@ echo $css->output();
 
 echo 'Starting index.html' . PHP_EOL;
 
-$assets_url = 'http://assets.sandbox.fake-charts-generator/';
+$assets_url = 'http://assets.sandbox.fake-charts-generator.com/';
 
 $vars = array(
     'ASSETS_URL' => $assets_url,

@@ -75,8 +75,9 @@ $w.events = {
     AJAX_SEND_COMPLETED : 'AJAXAfterSendEvent',
     KEY_UP : 'KeyUpEvent',
     USER_LOGGED : 'UserLoggedEvent',
+    USER_LOGGING_ERROR : 'UserLoggingErrorEvent',
     USER_LOGOUT : 'UserLogOutEvent',
-    FORM_INVALID : 'FormInvalidEvent',
+    FORM_INVALID : 'FormInvalidEvent'
 };
    
 _.extend($w.events, Backbone.Events);
@@ -1186,74 +1187,32 @@ $w.views.Header = $w.views.Abstract.extend({
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/views/Login.js*/
 $w.views.Login = $w.controls.UIForm.extend({
 
+    template : 'login_login',
+
     events : function(events){
         var this_events = {
-           'enter .email' : 'submitClickHandler', 
-           'enter .password' : 'submitClickHandler' 
         };
         return this._super(_.extend(this_events, events));
     },
     
     afterInitialize : function(){
-        this.model.validations.password.required[0] = true;
-        this.model.on('change:remember_password', this.rememberPasswordChangedHandler);
-    },
-    
-    afterRender : function(){
         this._super();
         this.$el.hide();
-        $w.getJSON({
-            url : $w.global.apiUrl + 'login',
-            success : this.statusCheckedHandler
-        });
+        //$w.events.trigger($w.events.USER_LOGGING_ERROR, error);
     },
 
-    statusCheckedHandler : function(response){
+
+    afterRender : function(){
+        this._super();
+        this.auth = $w.Application.auth();
         this.$el.show();
-        if( response.remember_email ){
-            this.model.set({
-                email : response.remember_email,
-                remember_email : true
-            });
-            this.currentRememberEmail = true;
-            this.controls['password'].$control.focus();
-        }else{
-            this.currentRememberEmail = false;
-            this.controls['email'].$control.focus();
-        }
+
     },
 
-    template : 'login_login',
-    
-    onSubmit : function(){
-
-        $w.postJSON({
-            url : $w.global.apiUrl + 'login',
-            data: JSON.stringify(this.model.toJSON()),
-            success : this.responseHandler,
-            error : this.errorHandler
-        });
-    },
-    
-    responseHandler : function(response){
-        var user = response;
-        this.trigger($w.events.USER_LOGGED, user);
-    },
-    
     errorHandler : function(response){
         this.$('.form_errors').html('The email or password you entered is incorrect.');
-    },
-
-    rememberPasswordChangedHandler : function(){
-        if( this.model.get('remember_password') ){
-            this.controls['remember_email'].$control.prop('checked', true);
-            this.controls['remember_email'].$control[0].disabled = true;
-        }else{
-            this.controls['remember_email'].$control.prop('checked', this.currentRememberEmail);
-            this.controls['remember_email'].$control[0].disabled = false;
-        }
     }
-    
+
 });
 
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/views/Logout.js*/
@@ -1265,16 +1224,8 @@ $w.views.Logout = $w.views.Abstract.extend({
     template : 'login_logout',
     
     afterRender : function(){
-        
-        $.getJSON($w.global.apiUrl + 'login/logout', null, this.responseHandler);
-    },
-    
-    responseHandler : function(response){
-        if(response.error){
-            //this.$('.form_errors').html('The email or password you entered is incorrect.');
-        }else{
-            this.trigger($w.events.USER_LOGOUT);
-        }
+        this.auth = $w.Application.auth();
+        this.auth.logout();
     }
     
 });
@@ -1608,12 +1559,15 @@ $w.Application = (function (Backbone, _, $) {
         display : display,
         guestDisplay : guestDisplay,
         login : login,
-        user : user
+        user : user,
+        auth : auth
     };
     
     var _initialized = false;
+    var _lastProtectedView = null;
     var _mainView;
     var _user;
+    var _auth;
     
     function initialize(){
         if( _initialized ){
@@ -1631,16 +1585,27 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function display(view){
-        invalidateLogin();
-        if( !user() ){
-            $w.global.router.go('login');
-            return null;
+        _lastProtectedView = view;
+        if( user() ){
+            displayProtected();
+        }else{
+            invalidateLogin();
         }
+    }
 
-        _mainView.display(view);
+    function displayProtected(){
+        if( _lastProtectedView ){
+            _mainView.display(_lastProtectedView);
+        }else{
+            $w.global.router.go('start');
+        }
     }
     
     function login(view){
+        if( user() ){
+            $w.global.router.go('start');
+            return null;
+        }
         view.on($w.events.USER_LOGGED, onUserLogged);
         view.on($w.events.USER_LOGOUT, onUserLogOut);
         _mainView.guestDisplay(view);
@@ -1656,9 +1621,9 @@ $w.Application = (function (Backbone, _, $) {
     
     function onUserLogged(loggedUser){
         setUser(loggedUser);
-        $w.global.router.go('start');  
+        defaultPageForLoggedUser();
     }
-    
+
     function onUserLogOut(){
         $w.global.router.go('login');
     }
@@ -1677,29 +1642,40 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function invalidateLogin(){
-        if( user() ){
+        if( _auth ){
             return null;
         }
-        
-        $.ajax({
-            type: 'GET',
-            url: $w.global.apiUrl + 'login',
-            dataType: 'json',
-            success:loginLoadedHandler,
-            async: false
-        });
+        var endPoint = new Firebase('https://crackling-fire-4479.firebaseio.com');
+        _auth = new FirebaseSimpleLogin(endPoint, loginLoadedHandler);
+
+        // attempt to log the user in with your preferred authentication provider
+        //auth.login('twitter');
+        //auth.login('facebook');
+        //auth.login('github');
+        //auth.login('password');
+
     }
-    
-    function loginLoadedHandler(response){
-        if( response.logged ){
-            setUser(response.user);
+
+    function loginLoadedHandler(error, user) {
+        if (user) {
+            setUser(user);
+            displayProtected();
+            return null;
         }
+
+        $w.global.router.go('login');
+        $w.events.trigger($w.events.USER_LOGGING_ERROR, error);
     }
 
     function user(){
         return _user;
     }
-    
+
+    function auth(){
+        invalidateLogin();
+        return _auth;
+    }
+
     return public_scope;
     
 }(window.Backbone, window._, window.$));

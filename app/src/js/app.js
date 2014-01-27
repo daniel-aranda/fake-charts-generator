@@ -5,12 +5,15 @@ $w.Application = (function (Backbone, _, $) {
         display : display,
         guestDisplay : guestDisplay,
         login : login,
-        user : user
+        user : user,
+        auth : auth
     };
     
     var _initialized = false;
+    var _lastProtectedView = null;
     var _mainView;
     var _user;
+    var _auth;
     
     function initialize(){
         if( _initialized ){
@@ -28,16 +31,27 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function display(view){
-        invalidateLogin();
-        if( !user() ){
-            $w.global.router.go('login');
-            return null;
+        _lastProtectedView = view;
+        if( user() ){
+            displayProtected();
+        }else{
+            invalidateLogin();
         }
+    }
 
-        _mainView.display(view);
+    function displayProtected(){
+        if( _lastProtectedView ){
+            _mainView.display(_lastProtectedView);
+        }else{
+            $w.global.router.go('start');
+        }
     }
     
     function login(view){
+        if( user() ){
+            $w.global.router.go('start');
+            return null;
+        }
         view.on($w.events.USER_LOGGED, onUserLogged);
         view.on($w.events.USER_LOGOUT, onUserLogOut);
         _mainView.guestDisplay(view);
@@ -53,9 +67,9 @@ $w.Application = (function (Backbone, _, $) {
     
     function onUserLogged(loggedUser){
         setUser(loggedUser);
-        $w.global.router.go('start');  
+        defaultPageForLoggedUser();
     }
-    
+
     function onUserLogOut(){
         $w.global.router.go('login');
     }
@@ -74,29 +88,40 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function invalidateLogin(){
-        if( user() ){
+        if( _auth ){
             return null;
         }
-        
-        $.ajax({
-            type: 'GET',
-            url: $w.global.apiUrl + 'login',
-            dataType: 'json',
-            success:loginLoadedHandler,
-            async: false
-        });
+        var endPoint = new Firebase('https://crackling-fire-4479.firebaseio.com');
+        _auth = new FirebaseSimpleLogin(endPoint, loginLoadedHandler);
+
+        // attempt to log the user in with your preferred authentication provider
+        //auth.login('twitter');
+        //auth.login('facebook');
+        //auth.login('github');
+        //auth.login('password');
+
     }
-    
-    function loginLoadedHandler(response){
-        if( response.logged ){
-            setUser(response.user);
+
+    function loginLoadedHandler(error, user) {
+        if (user) {
+            setUser(user);
+            displayProtected();
+            return null;
         }
+
+        $w.global.router.go('login');
+        $w.events.trigger($w.events.USER_LOGGING_ERROR, error);
     }
 
     function user(){
         return _user;
     }
-    
+
+    function auth(){
+        invalidateLogin();
+        return _auth;
+    }
+
     return public_scope;
     
 }(window.Backbone, window._, window.$));

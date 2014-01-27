@@ -27,6 +27,8 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+        <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
+        <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.2.1/firebase-simple-login.js'></script>
         <script src="{ASSETS_URL}js/plugins.js"></script>
         
         <script src="{ASSETS_URL}fcg/{JAVASCRIPT}"></script>

@@ -4,8 +4,9 @@ $w.events = {
     AJAX_SEND_COMPLETED : 'AJAXAfterSendEvent',
     KEY_UP : 'KeyUpEvent',
     USER_LOGGED : 'UserLoggedEvent',
+    USER_LOGGING_ERROR : 'UserLoggingErrorEvent',
     USER_LOGOUT : 'UserLogOutEvent',
-    FORM_INVALID : 'FormInvalidEvent',
+    FORM_INVALID : 'FormInvalidEvent'
 };
    
 _.extend($w.events, Backbone.Events);
