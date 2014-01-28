@@ -5,7 +5,8 @@ window.FakeChartsGenerator = typeof FakeChartsGenerator != 'undefined' ? FakeCha
 window.$w = FakeChartsGenerator;
 
 var packages = {
-    users : {}
+    users : {},
+    charts : {}
 };
 
 $w.models = JSON.parse(JSON.stringify(packages));

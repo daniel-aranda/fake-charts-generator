@@ -20,6 +20,11 @@ $w.views.Login = $w.controls.UIForm.extend({
         this.auth = $w.Application.auth();
         this.$el.show();
 
+        //auth.login('twitter');
+        //auth.login('facebook');
+        //auth.login('github');
+        //auth.login('password');
+
     },
 
     errorHandler : function(response){

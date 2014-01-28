@@ -6,7 +6,8 @@ window.FakeChartsGenerator = typeof FakeChartsGenerator != 'undefined' ? FakeCha
 window.$w = FakeChartsGenerator;
 
 var packages = {
-    users : {}
+    users : {},
+    charts : {}
 };
 
 $w.models = JSON.parse(JSON.stringify(packages));
@@ -978,6 +979,27 @@ $w.popup = {
     
 };
 
+/*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/app/Config.js*/
+$w.Config = (function (Backbone, _, $) {
+
+    var public_scope = {
+        server : server
+    };
+
+    var currentServer = 1;
+
+    var bd = {
+        server1 : 'https://crackling-fire-4479.firebaseio.com/'
+    };
+
+    function server(){
+        return bd['server' + currentServer];
+    }
+
+    return public_scope;
+
+}(window.Backbone, window._, window.$));
+
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/app/Router.js*/
 $w.Router = Backbone.Router.extend({
     
@@ -1052,6 +1074,21 @@ $w.Router = Backbone.Router.extend({
 
 });
     
+
+/*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/models/charts/Chart.js*/
+$w.models.charts.Chart = $w.models.Abstract.extend({
+
+    defaults : {
+        title : 'untitled'
+    },
+
+    validations :{
+        title : {
+            required : [true]
+        }
+    }
+
+});
 
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/models/Main.js*/
 $w.models.Main = $w.models.Abstract.extend({
@@ -1152,6 +1189,15 @@ $w.models.users.ValidateHash = $w.models.Abstract.extend({
     
 });
 
+/*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/collections/charts/Chart.js*/
+$w.collections.charts.Chart = Backbone.Firebase.Collection.extend({
+
+    model: $w.models.charts.Chart,
+
+    firebase: new Firebase($w.Config.server() + 'charts/')
+
+});
+
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/views/commons/Footer.js*/
 $w.views.Footer = $w.views.Abstract.extend({
 
@@ -1206,6 +1252,11 @@ $w.views.Login = $w.controls.UIForm.extend({
         this._super();
         this.auth = $w.Application.auth();
         this.$el.show();
+
+        //auth.login('twitter');
+        //auth.login('facebook');
+        //auth.login('github');
+        //auth.login('password');
 
     },
 
@@ -1406,7 +1457,24 @@ $w.views.ProjectIndex = $w.views.Abstract.extend({
 /*File: C:\Users\Daniel Aranda\Documents\vhosts\fake-charts-generator\workflow/../app/src/js/views/Start.js*/
 $w.views.Start = $w.views.Abstract.extend({
 
-    template : 'start_start'
+    template : 'start_start',
+
+    afterRender : function(){
+        this._super();
+        //$w.Application.fireBase().child('charts').child('chart').set({user_id : uid, name : 'daniel'});
+
+//        var b = $w.Application.fireBase();
+//        b.child('charts').push({user_id : uid, name : 'daniel'});
+//
+//        b.child('charts').endAt().limit(10).on('child_added', function(snapshot) {
+//            console.log(snapshot.val().name)
+//        })
+
+        //Firebase.goOnline()
+
+//        var c = new $w.collections.charts.Chart();
+//        c.add({daniel : 'no pinches mames'});
+    }
  
 });
 
@@ -1560,15 +1628,17 @@ $w.Application = (function (Backbone, _, $) {
         guestDisplay : guestDisplay,
         login : login,
         user : user,
-        auth : auth
+        auth : auth,
+        fireBase : fireBase
     };
     
     var _initialized = false;
     var _lastProtectedView = null;
     var _mainView;
     var _user;
+    var _fireBase;
     var _auth;
-    
+
     function initialize(){
         if( _initialized ){
             return true;
@@ -1602,10 +1672,6 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function login(view){
-        if( user() ){
-            $w.global.router.go('start');
-            return null;
-        }
         view.on($w.events.USER_LOGGED, onUserLogged);
         view.on($w.events.USER_LOGOUT, onUserLogOut);
         _mainView.guestDisplay(view);
@@ -1641,19 +1707,20 @@ $w.Application = (function (Backbone, _, $) {
         _mainView.render();
     }
     
+    function invalidateFireBase(){
+        if( _fireBase ){
+            return null;
+        }
+
+        _fireBase = new Firebase($w.Config.server() + 'application/');
+
+    }
     function invalidateLogin(){
         if( _auth ){
             return null;
         }
-        var endPoint = new Firebase('https://crackling-fire-4479.firebaseio.com');
-        _auth = new FirebaseSimpleLogin(endPoint, loginLoadedHandler);
-
-        // attempt to log the user in with your preferred authentication provider
-        //auth.login('twitter');
-        //auth.login('facebook');
-        //auth.login('github');
-        //auth.login('password');
-
+        invalidateFireBase();
+        _auth = new FirebaseSimpleLogin(_fireBase, loginLoadedHandler);
     }
 
     function loginLoadedHandler(error, user) {
@@ -1674,6 +1741,11 @@ $w.Application = (function (Backbone, _, $) {
     function auth(){
         invalidateLogin();
         return _auth;
+    }
+
+    function fireBase(){
+        invalidateFireBase();
+        return _fireBase;
     }
 
     return public_scope;

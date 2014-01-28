@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>Work Like Play Chess!</title>
+        <title>Fake Charts Generator!</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
 
@@ -27,8 +27,9 @@
         <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
-        <script type='text/javascript' src='https://cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
-        <script type='text/javascript' src='https://cdn.firebase.com/js/simple-login/1.2.1/firebase-simple-login.js'></script>
+        <script type='text/javascript' src='//cdn.firebase.com/js/client/1.0.2/firebase.js'></script>
+        <script type='text/javascript' src='//cdn.firebase.com/js/simple-login/1.2.1/firebase-simple-login.js'></script>
+        <script src="//cdn.firebase.com/libs/backfire/0.3.0/backbone-firebase.min.js"></script>
         <script src="{ASSETS_URL}js/plugins.js"></script>
         
         <script src="{ASSETS_URL}fcg/{JAVASCRIPT}"></script>

@@ -6,15 +6,17 @@ $w.Application = (function (Backbone, _, $) {
         guestDisplay : guestDisplay,
         login : login,
         user : user,
-        auth : auth
+        auth : auth,
+        fireBase : fireBase
     };
     
     var _initialized = false;
     var _lastProtectedView = null;
     var _mainView;
     var _user;
+    var _fireBase;
     var _auth;
-    
+
     function initialize(){
         if( _initialized ){
             return true;
@@ -48,10 +50,6 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function login(view){
-        if( user() ){
-            $w.global.router.go('start');
-            return null;
-        }
         view.on($w.events.USER_LOGGED, onUserLogged);
         view.on($w.events.USER_LOGOUT, onUserLogOut);
         _mainView.guestDisplay(view);
@@ -87,19 +85,20 @@ $w.Application = (function (Backbone, _, $) {
         _mainView.render();
     }
     
+    function invalidateFireBase(){
+        if( _fireBase ){
+            return null;
+        }
+
+        _fireBase = new Firebase($w.Config.server() + 'application/');
+
+    }
     function invalidateLogin(){
         if( _auth ){
             return null;
         }
-        var endPoint = new Firebase('https://crackling-fire-4479.firebaseio.com');
-        _auth = new FirebaseSimpleLogin(endPoint, loginLoadedHandler);
-
-        // attempt to log the user in with your preferred authentication provider
-        //auth.login('twitter');
-        //auth.login('facebook');
-        //auth.login('github');
-        //auth.login('password');
-
+        invalidateFireBase();
+        _auth = new FirebaseSimpleLogin(_fireBase, loginLoadedHandler);
     }
 
     function loginLoadedHandler(error, user) {
@@ -120,6 +119,11 @@ $w.Application = (function (Backbone, _, $) {
     function auth(){
         invalidateLogin();
         return _auth;
+    }
+
+    function fireBase(){
+        invalidateFireBase();
+        return _fireBase;
     }
 
     return public_scope;
