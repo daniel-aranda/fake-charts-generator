@@ -1470,7 +1470,7 @@ $w.views.Start = $w.views.Abstract.extend({
 //            console.log(snapshot.val().name)
 //        })
 
-        //Firebase.goOnline()
+//        Firebase.goOnline()
 
 //        var c = new $w.collections.charts.Chart();
 //        c.add({daniel : 'no pinches mames'});
