@@ -1666,14 +1666,13 @@ $w.Application = (function (Backbone, _, $) {
     function displayProtected(){
         if( _lastProtectedView ){
             _mainView.display(_lastProtectedView);
+            _lastProtectedView = null;
         }else{
             $w.global.router.go('start');
         }
     }
     
     function login(view){
-        view.on($w.events.USER_LOGGED, onUserLogged);
-        view.on($w.events.USER_LOGOUT, onUserLogOut);
         _mainView.guestDisplay(view);
     }
     
@@ -1687,10 +1686,11 @@ $w.Application = (function (Backbone, _, $) {
     
     function onUserLogged(loggedUser){
         setUser(loggedUser);
-        defaultPageForLoggedUser();
+        displayProtected();
     }
 
     function onUserLogOut(){
+        _user = null;
         $w.global.router.go('login');
     }
     
@@ -1725,13 +1725,16 @@ $w.Application = (function (Backbone, _, $) {
 
     function loginLoadedHandler(error, user) {
         if (user) {
-            setUser(user);
-            displayProtected();
+            onUserLogged(user);
             return null;
         }
 
-        $w.global.router.go('login');
-        $w.events.trigger($w.events.USER_LOGGING_ERROR, error);
+        if(error){
+            $w.events.trigger($w.events.USER_LOGGING_ERROR, error);
+        }else{
+            onUserLogOut();
+        }
+
     }
 
     function user(){
