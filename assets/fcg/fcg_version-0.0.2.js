@@ -1633,7 +1633,7 @@ $w.Application = (function (Backbone, _, $) {
     };
     
     var _initialized = false;
-    var _lastProtectedView = null;
+    var _lastProtectedRoute = null;
     var _mainView;
     var _user;
     var _fireBase;
@@ -1655,18 +1655,19 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function display(view){
-        _lastProtectedView = view;
         if( user() ){
-            displayProtected();
+            _mainView.display(view);
         }else{
+            _lastProtectedRoute = Backbone.history.fragment;
+            $w.global.router.go('login');
             invalidateLogin();
         }
     }
 
     function displayProtected(){
-        if( _lastProtectedView ){
-            _mainView.display(_lastProtectedView);
-            _lastProtectedView = null;
+        if( _lastProtectedRoute ){
+            $w.global.router.go(_lastProtectedRoute);
+            _lastProtectedRoute = null;
         }else{
             $w.global.router.go('start');
         }
@@ -1712,7 +1713,7 @@ $w.Application = (function (Backbone, _, $) {
             return null;
         }
 
-        _fireBase = new Firebase($w.Config.server() + 'application/');
+        _fireBase = new Firebase($w.Config.server());
 
     }
     function invalidateLogin(){
@@ -1725,7 +1726,9 @@ $w.Application = (function (Backbone, _, $) {
 
     function loginLoadedHandler(error, user) {
         if (user) {
-            onUserLogged(user);
+            if( !_user ){
+                onUserLogged(user);
+            }
             return null;
         }
 
