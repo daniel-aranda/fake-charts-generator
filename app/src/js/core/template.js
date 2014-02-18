@@ -9,7 +9,7 @@
  *      One package per module and also one package for commons. The path to store the templates is:
  *      /assets/templates/{package}.html
  *      Package will contain templates in this way:
- *      <script class="tpl{TemplateName}" type="text/x-Sailthru-tpl">
+ *      <script class="tpl{TemplateName}" type="text/x-FCG-tpl">
  *          This is a containg for a Template
  *      </script>
  * 

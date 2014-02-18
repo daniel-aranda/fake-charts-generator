@@ -1,6 +1,6 @@
 /**
  * 
- * Sailthru UI 2.0
+ * FCG UI 2.0
  * PopUpManager
  * ::::::::::::::::::::::::::::
  * 
