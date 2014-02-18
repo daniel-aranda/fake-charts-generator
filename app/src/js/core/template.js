@@ -75,10 +75,11 @@ $w.tpl = {
             }
         }
         
-        var template = this.compiledTemplates[name];  
-        
+        var template = this.compiledTemplates[name];
+        var result;
+
         try{
-            var result = template(data);
+            result = template(data);
         }catch(e){
             console.log('Error rendering the template: ' + e.message);
             console.log('Template: ', arguments);

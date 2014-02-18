@@ -1,6 +1,6 @@
 
 $w.postJSON = function(settings){
-    var settings = _.extend({
+    settings = _.extend({
         type: "POST",
         contentType : 'application/json',
         dataType: "json"
@@ -10,7 +10,7 @@ $w.postJSON = function(settings){
 
 
 $w.getJSON = function(settings){
-    var settings = _.extend({
+    settings = _.extend({
         type: "GET",
         contentType : 'application/json',
         dataType: "json"

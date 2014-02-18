@@ -95,7 +95,7 @@ $w.popup = {
         if( this.window == target){
             this.removeActiveWindow();
         }else{
-            if( this.previewsWindows.length == 0 ){
+            if( this.previewsWindows.length === 0 ){
                 return false;
             }
             this.previewsWindows = _.filter(this.previewsWindows, function(item){

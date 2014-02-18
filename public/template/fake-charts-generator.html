@@ -1,0 +1,128 @@
+Footer
+<div id="user-bar"><%= obj.name %> - <a href="#logout">logout</a></div>
+<input type="checkbox" />
+    <label><%= obj.field %></label>
+    <div class="control-container"></div>
+    <div class="validation-message"></div>
+
+<textarea></textarea>
+<input type="text" />
+<div class="alert_message">
+    <%= $w.image('icons/error.png') %>
+    <div class="alert_error_message"><%= content %></div>
+</div>
+<br/>
+<div class="buttons one_button">
+    <%= $w.submitButton(button_label) %>
+</div>
+<div class='window_header'>
+    <span class="window_title"><%= title %></span>
+    <div class="window_close">x</div>
+</div>
+<div class="window_content">
+</div>
+<div id="overlay" ></div>
+<div id="layout" class="default">
+    <div class="header-holder"></div>
+    <div class="content-holder"></div>
+    <div class="footer-holder"></div>
+</div>
+<div id="loader">
+    <div>
+        <%= $w.image('layout/loader.gif') %>
+    </div>
+</div>      
+    <div id="login-form" class="content-box form">
+        
+        <div class="ui-control textfield" type="email" name="email"></div>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('login') %>
+        </div>
+        <div class="ui-control checkbox" name="remember_email"></div>
+        <div class="ui-control checkbox" name="remember_password"></div>
+        <hr />
+        <div>
+            <label>&nbsp; </label>
+            <a href="#forgot-password">forgot password?</a>
+        </div>
+    </div>
+
+    <div id="logout-box" class="content-box">
+        logout
+    </div>
+    <div class="content-box">
+        Project 1 \o/
+    </div>
+    <div class="content-box">
+        Your Projects
+    </div>
+    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="email" name="email"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('send verification email') %>
+        </div>
+    </div>
+
+<div id="login-form" class="content-box form">
+    
+    <div class="ui-control textfield" name="email"></div>
+    <div class="ui-control textfield" type="password" name="password"></div>
+    
+    <div>
+        <div class="form_errors validation-message"></div>
+    </div>
+    <div>
+        <label>&nbsp; </label>
+        <input type="button" class="submit" value="create" />
+    </div>
+</div>
+
+    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        <div class="ui-control textfield" type="password" name="confirm_password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('set new password') %>
+        </div>
+    </div>
+
+    <div id="login-form" class="content-box form">
+        <h3>
+            Password reset
+        </h3>
+        <p>
+            Please type the hash that you received by Email in order to enable the 
+            password reset.
+        </p>
+        <div class="ui-control textarea" type="text" name="hash"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('validate hash') %>
+            <%= $w.cancelButton() %>
+        </div>
+    </div>

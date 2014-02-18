@@ -1,5 +1,3 @@
-'use strict';
-
 window.FakeChartsGenerator = typeof FakeChartsGenerator != 'undefined' ? FakeChartsGenerator : {};
 
 window.$w = FakeChartsGenerator;

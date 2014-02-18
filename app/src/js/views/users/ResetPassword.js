@@ -27,7 +27,7 @@ $w.views.users.ResetPassword = $w.controls.UIForm.extend({
     validateHashHandler : function(response){
         if( response.valid ){
             this.$el.show();
-            this.controls['password'].$control.focus();
+            this.controls.password.$control.focus();
         }else{
             $w.global.router.go('validate-hash');
         }

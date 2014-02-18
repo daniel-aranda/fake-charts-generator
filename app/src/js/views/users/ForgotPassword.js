@@ -12,7 +12,7 @@ $w.views.users.ForgotPassword = $w.controls.UIForm.extend({
     
     afterRender : function(){
         this._super();
-        this.controls['email'].$control.focus();  
+        this.controlsemail.$control.focus();
     },
     
     submitClickHandler : function(){

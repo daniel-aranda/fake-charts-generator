@@ -54,7 +54,7 @@ $w.util = {
             if( typeof target[i] == 'function' ){
                 target[i] = _.bind(target[i], target);
             }
-        };
+        }
         
     },
     

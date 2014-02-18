@@ -11,7 +11,7 @@ $w.views.users.ValidateHash = $w.controls.UIForm.extend({
     
     afterRender : function(){
         this._super();
-        this.controls['hash'].$control.focus(); 
+        this.controls.hash.$control.focus();
         //this.disable();
     },
     

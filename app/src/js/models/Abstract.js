@@ -21,17 +21,18 @@ $w.models.Abstract = Backbone.Model.extend({
 
     validateField : function(validations, key){
         var valid = true;
+        var msg;
         if(validations.required && validations.required[0]){
             if( $w.util.isEmpty(this.get(key)) ){
                 valid = false;
-                var msg = validations.required[1] ? validations.required[1] : key + ' is required';
+                msg = validations.required[1] ? validations.required[1] : key + ' is required';
                 this.trigger($w.events.FORM_INVALID + ':' + key, msg);
             }
         }
         if(validations.confirm && validations.confirm[0]){
             if( this.get(key) && this.get(key) != this.get(validations.confirm[0]) ){
                 valid = false;
-                var msg = validations.confirm[1] ? validations.confirm[1] : validations.confirm[0] + " isn't the same than " + key;
+                msg = validations.confirm[1] ? validations.confirm[1] : validations.confirm[0] + " isn't the same than " + key;
                 this.trigger($w.events.FORM_INVALID + ':' + validations.confirm[0], msg);
             }
         }

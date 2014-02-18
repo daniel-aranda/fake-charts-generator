@@ -14,7 +14,7 @@ $w.views.Abstract = Backbone.View.extend({
         },
         
         getTemplate : function(template, data){
-            var template = $w.tpl.getTemplate(template, data);
+            template = $w.tpl.getTemplate(template, data);
             this.$el.html(template);
         },
         
