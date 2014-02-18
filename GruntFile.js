@@ -1,11 +1,30 @@
 module.exports = function(grunt){
 
     grunt.initConfig({
+
         pkg: grunt.file.readJSON('package.json'),
+
         concat: {
+
             options: {
-                separator: '\n'
+
+                separator: '\n',
+
+                process : function(src, filepath){
+                    var ext = filepath.split('.').pop();
+                    var path = filepath.split('/');
+                    var name = path.pop();
+                    var folder = path.pop();
+                    name = name.replace('.' + ext, '');
+                    if ( ext.toLowerCase() == 'html'){
+                        var templateName = folder + '_' + name;
+                        return '<script type="text/x-FCK-tpl" class="tpl ' + templateName + '">\n' + src + '</script>\n';
+                    }
+                    return src;
+                }
+
             },
+
             js: {
                 src: [
                     'app/src/js/core/main.js',
@@ -22,26 +41,32 @@ module.exports = function(grunt){
                 ],
                 dest: 'public/js/<%= pkg.name %>.js'
             },
+
             css : {
                 src: [
                     'app/src/css/**/*.css'
                 ],
                 dest: 'public/css/<%= pkg.name %>.css'
             },
+
             html : {
                 src: [
                     'app/src/html/**/*.html'
                 ],
-                dest: 'public/template/<%= pkg.name %>.html'
+                dest: 'public/templates/<%= pkg.name %>.html'
             }
+
         },
+
         jshint : {
             files: ['app/src/js/**/*.js']
         },
+
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint']
         }
+
     });
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
