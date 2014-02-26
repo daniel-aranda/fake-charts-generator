@@ -1,4 +1,6 @@
 $w.Router = Backbone.Router.extend({
+
+    history : [],
     
     routes : {
         "login"                         : "loginView",   
@@ -7,9 +9,14 @@ $w.Router = Backbone.Router.extend({
         "reset-password"                : "resetPasswordView",   
         "validate-hash"                 : "validateHashView",   
         "logout"                        : "logoutView",   
-        "start"                         : "startView",   
-        "project"                       : "projectView",   
+        "start"                         : "startView",
+        "initializing"                  : "initializingView",
+        "project"                       : "projectView",
         "*path"                         : "defaultRoute"   
+    },
+
+    initialize : function(){
+        $w.util.bindAll(this);
     },
 
     defaultRoute : function() {
@@ -55,7 +62,16 @@ $w.Router = Backbone.Router.extend({
         var view = new $w.views.Start();
         this.view(view);
     },
-    
+
+    initializingView : function(){
+        if( !$w.Application.loginRequested() || $w.Application.user() ){
+            this.defaultRoute();
+        }else{
+            var view = new $w.views.Initializing();
+            $w.Application.guestDisplay(view);
+        }
+    },
+
     projectView : function(){
         var view = new $w.views.ProjectIndex();
         this.view(view);
@@ -70,4 +86,3 @@ $w.Router = Backbone.Router.extend({
     }
 
 });
-    

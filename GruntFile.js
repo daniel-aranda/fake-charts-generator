@@ -59,12 +59,24 @@ module.exports = function(grunt){
         },
 
         jshint : {
+
             files: ['app/src/js/**/*.js']
+
         },
 
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint']
+
+            files: [
+                '<%= concat.js.src %>',
+                '<%= concat.css.src %>',
+                '<%= concat.html.src %>'
+            ],
+
+            options : {
+                spawn : false
+            },
+
+            tasks: ['jshint', 'concat']
         }
 
     });
@@ -76,6 +88,6 @@ module.exports = function(grunt){
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-usemin');
 
-    grunt.registerTask('default', ['jshint', 'concat']);
+    grunt.registerTask('default', ['watch']);
 
 };

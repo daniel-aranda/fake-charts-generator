@@ -7,7 +7,8 @@ $w.Application = (function (Backbone, _, $) {
         login : login,
         user : user,
         auth : auth,
-        fireBase : fireBase
+        fireBase : fireBase,
+        loginRequested : loginRequested
     };
     
     var _initialized = false;
@@ -16,6 +17,7 @@ $w.Application = (function (Backbone, _, $) {
     var _user;
     var _fireBase;
     var _auth;
+    var _loginRequested = false;
 
     function initialize(){
         if( _initialized ){
@@ -37,7 +39,6 @@ $w.Application = (function (Backbone, _, $) {
             _mainView.display(view);
         }else{
             _lastProtectedRoute = Backbone.history.fragment;
-            $w.global.router.go('login');
             invalidateLogin();
         }
     }
@@ -75,6 +76,7 @@ $w.Application = (function (Backbone, _, $) {
     
     function setUpRouter(){
         $w.global.router = new $w.Router();
+        $w.global.router.initialize();
         Backbone.history.start();
     }
     
@@ -98,7 +100,10 @@ $w.Application = (function (Backbone, _, $) {
         if( _auth ){
             return null;
         }
+
         invalidateFireBase();
+        _loginRequested = true;
+        $w.global.router.go('initializing');
         _auth = new FirebaseSimpleLogin(_fireBase, loginLoadedHandler);
     }
 
@@ -113,7 +118,13 @@ $w.Application = (function (Backbone, _, $) {
         if(error){
             $w.events.trigger($w.events.USER_LOGGING_ERROR, error);
         }else{
-            onUserLogOut();
+            if( _user ){
+                onUserLogOut();
+            }else{
+                if( Backbone.history.fragment == 'initializing' ){
+                    $w.global.router.go('login');
+                }
+            }
         }
 
     }
@@ -130,6 +141,10 @@ $w.Application = (function (Backbone, _, $) {
     function fireBase(){
         invalidateFireBase();
         return _fireBase;
+    }
+
+    function loginRequested(){
+        return _loginRequested;
     }
 
     return public_scope;
