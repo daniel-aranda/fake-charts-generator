@@ -1,5 +1,4 @@
 <?php
-require __DIR__ . '/../app/bootstrap.php';
 require __DIR__ . '/workflow.php';
 
 $version = exec("git describe --abbrev=0 --tags");

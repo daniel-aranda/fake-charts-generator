@@ -20,7 +20,7 @@ $w.getJSON = function(settings){
 
 
 $w.asset = function(path){
-    return $w.global.assetsUrl + path;  
+    return $w.Config.assetsUrl() + path;
 };
 
 $w.image = function(path, className){

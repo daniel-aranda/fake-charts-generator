@@ -103,7 +103,7 @@ $w.getJSON = function(settings){
 
 
 $w.asset = function(path){
-    return $w.global.assetsUrl + path;  
+    return $w.Config.assetsUrl() + path;
 };
 
 $w.image = function(path, className){
@@ -950,6 +950,7 @@ $w.popup = {
 $w.Config = (function (Backbone, _, $) {
 
     var public_scope = {
+        assetsUrl : assetsUrl,
         server : server
     };
 
@@ -958,6 +959,10 @@ $w.Config = (function (Backbone, _, $) {
     var bd = {
         server1 : 'https://crackling-fire-4479.firebaseio.com/'
     };
+
+    function assetsUrl(){
+        return 'http://sandbox.fake-charts-generator.com/';
+    }
 
     function server(){
         return bd['server' + currentServer];
