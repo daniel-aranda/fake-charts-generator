@@ -4,6 +4,10 @@ $w.views.Login = $w.controls.UIForm.extend({
 
     events : function(events){
         var this_events = {
+            'click .twitter' : 'loginWithTwitter',
+            'click .google' : 'loginWithGoogle',
+            'click .facebook' : 'loginWithFacebook',
+            'click .github' : 'loginWithGithub'
         };
         return this._super(_.extend(this_events, events));
     },
@@ -11,20 +15,29 @@ $w.views.Login = $w.controls.UIForm.extend({
     afterInitialize : function(){
         this._super();
         this.$el.hide();
-        //$w.events.trigger($w.events.USER_LOGGING_ERROR, error);
+        //$w.events.on($w.events.USER_LOGGING_ERROR, error);
     },
 
 
     afterRender : function(){
         this._super();
-        this.auth = $w.Application.auth();
         this.$el.show();
+    },
 
-        //auth.login('twitter');
-        //auth.login('facebook');
-        //auth.login('github');
-        //auth.login('password');
+    loginWithTwitter : function(){
+        $w.Application.auth().login('twitter');
+    },
 
+    loginWithGoogle : function(){
+        $w.Application.auth().login('google');
+    },
+
+    loginWithFacebook : function(){
+        $w.Application.auth().login('facebook');
+    },
+
+    loginWithGithub : function(){
+        $w.Application.auth().login('github');
     },
 
     errorHandler : function(response){
