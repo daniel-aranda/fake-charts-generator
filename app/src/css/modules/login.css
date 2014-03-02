@@ -1,5 +1,9 @@
-#login-form{
+#login-form, #intro{
     margin-top: 50px;
+}
+#intro > div{
+    display: inline-block;
+    margin-right: 20px;
 }
 #login-form > div > label, #login-form > div > .left-wrapper{
     width: 120px;

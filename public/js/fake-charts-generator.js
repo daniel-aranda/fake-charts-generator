@@ -107,6 +107,7 @@ $w.asset = function(path){
 };
 
 $w.image = function(path, className){
+    className = className || '';
     return '<img src="' + $w.asset('img/' + path) + '" class="' + className + '" />';  
 };
 

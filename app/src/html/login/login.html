@@ -1,20 +1,31 @@
-    <div id="login-form" class="content-box form">
-        
-        <div class="ui-control textfield" type="email" name="email"></div>
-        <div class="ui-control textfield" type="password" name="password"></div>
-        
+<div>
+    <div id="intro" class="content-box">
+        <%= $w.image('icons/bar-chart-icon-big.png') %>
         <div>
-            <div class="form_errors validation-message"></div>
-        </div>
-        <div>
-            <label>&nbsp; </label>
-            <%= $w.submitButton('login') %>
-        </div>
-        <div class="ui-control checkbox" name="remember_email"></div>
-        <div class="ui-control checkbox" name="remember_password"></div>
-        <hr />
-        <div>
-            <label>&nbsp; </label>
-            <a href="#forgot-password">forgot password?</a>
+            <h2>
+                Fake Charts Generator
+            </h2>
+            <p>
+                By: <a href="http://sandbox.danielarandaochoa.com">Daniel Aranda</a>
+            </p>
         </div>
     </div>
+</div>
+<div>
+    <div id="login-form" class="content-box form">
+        <p>
+            Login with:
+        </p>
+        <div>
+            <div>
+                <%= $w.image('icons/twitter.png') %>
+            </div>
+            <div>
+                <%= $w.image('icons/github.png') %>
+            </div>
+            <div>
+                <%= $w.image('icons/facebook.png') %>
+            </div>
+        </div>
+    </div>
+</div>
