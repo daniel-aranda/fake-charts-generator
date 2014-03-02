@@ -962,7 +962,7 @@ $w.Config = (function (Backbone, _, $) {
     };
 
     function assetsUrl(){
-        return 'http://sandbox.fakechartsgenerator.com/';
+        return '';
     }
 
     function server(){
@@ -1093,6 +1093,11 @@ $w.models.User = $w.models.Abstract.extend({
     
     getShortName : function(){
         var name;
+
+        if( $w.util.isEmpty(this.get('first_name')) ){
+            return '';
+        }
+
         name = this.get('first_name');
         name += ' ';
         name += this.get('last_name') ? this.get('last_name').substring(0,1) + '.' : '';
@@ -1434,7 +1439,7 @@ $w.views.Header = $w.views.Abstract.extend({
     getViewData : function(){
         var name = '';
         if( $w.Application.user() ){
-            name = $w.Application.user().getShortName(); 
+            name = $w.Application.user().get('displayName');
         }
         
         var data = {

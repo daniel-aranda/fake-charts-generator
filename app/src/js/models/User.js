@@ -20,6 +20,11 @@ $w.models.User = $w.models.Abstract.extend({
     
     getShortName : function(){
         var name;
+
+        if( $w.util.isEmpty(this.get('first_name')) ){
+            return '';
+        }
+
         name = this.get('first_name');
         name += ' ';
         name += this.get('last_name') ? this.get('last_name').substring(0,1) + '.' : '';

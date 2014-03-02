@@ -12,7 +12,7 @@ $w.Config = (function (Backbone, _, $) {
     };
 
     function assetsUrl(){
-        return 'http://sandbox.fakechartsgenerator.com/';
+        return '';
     }
 
     function server(){

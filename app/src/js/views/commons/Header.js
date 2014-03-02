@@ -8,7 +8,7 @@ $w.views.Header = $w.views.Abstract.extend({
     getViewData : function(){
         var name = '';
         if( $w.Application.user() ){
-            name = $w.Application.user().getShortName(); 
+            name = $w.Application.user().get('displayName');
         }
         
         var data = {
