@@ -1090,6 +1090,15 @@ $w.models.User = $w.models.Abstract.extend({
             required : [false]
         }  
     },
+
+    getKey : function(){
+        if( !this.get('provider') || !this.get('id') ){
+            throw "Can't get key of a non logged user";
+        }
+
+        var key = this.get('provider') + '_' + this.get('id');
+        return key;
+    },
     
     getShortName : function(){
         var name;
@@ -1655,6 +1664,7 @@ $w.Application = (function (Backbone, _, $) {
     
     function onUserLogged(loggedUser){
         setUser(loggedUser);
+        $w.Application.fireBase().child('users').child(_user.getKey()).set(loggedUser);
         displayProtected();
     }
 

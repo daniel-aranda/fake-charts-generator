@@ -66,6 +66,7 @@ $w.Application = (function (Backbone, _, $) {
     
     function onUserLogged(loggedUser){
         setUser(loggedUser);
+        $w.Application.fireBase().child('users').child(_user.getKey()).set(loggedUser);
         displayProtected();
     }
 

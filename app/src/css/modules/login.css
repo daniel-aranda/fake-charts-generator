@@ -3,6 +3,7 @@
 }
 #intro > div{
     display: inline-block;
+    vertical-align: bottom;
     margin-right: 20px;
 }
 #login-form > div > label, #login-form > div > .left-wrapper{
@@ -13,4 +14,10 @@
 }
 #logout-box{
     margin-top: 50px;
+}
+#intro .source{
+    margin-top: 70px;
+}
+#intro .source a{
+    color: #898989;
 }
