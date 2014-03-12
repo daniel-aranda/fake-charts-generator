@@ -1178,7 +1178,19 @@ $w.collections.charts.Chart = Backbone.Firebase.Collection.extend({
 
     model: $w.models.charts.Chart,
 
-    firebase: new Firebase($w.Config.server() + 'charts/')
+    firebase : function(){
+        return new Firebase($w.Config.server() + 'charts/');
+    }
+
+});
+$w.collections.charts.UserChart = Backbone.Firebase.Collection.extend({
+
+    model: $w.models.charts.Chart,
+
+    firebase : function(){
+        var user_id = $w.Application.user().get('id');
+        return new Firebase($w.Config.server() + 'users-charts/' + user_id);
+    }
 
 });
 $w.views.Initializing = $w.views.Abstract.extend({
@@ -1412,6 +1424,19 @@ $w.views.Start = $w.views.Abstract.extend({
 
     template : 'start_start',
 
+    events : function(events){
+        var this_events = {
+            'click #add-new-chart' : 'addNewChart'
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    addNewChart : function(){
+        var c = new $w.collections.charts.UserChart();
+        var u = $w.Application.user().get('id');
+        var newChart = c.add({user_id :u, bonita:'Lily' })[0];
+    },
+
     afterRender : function(){
         this._super();
         //$w.Application.fireBase().child('charts').child('chart').set({user_id : uid, name : 'daniel'});
@@ -1425,8 +1450,6 @@ $w.views.Start = $w.views.Abstract.extend({
 
 //        Firebase.goOnline()
 
-//        var c = new $w.collections.charts.Chart();
-//        c.add({daniel : 'no pinches mames'});
     }
  
 });
