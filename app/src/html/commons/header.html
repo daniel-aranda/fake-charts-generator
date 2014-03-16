@@ -1,1 +1,11 @@
-<div id="user-bar"><%= obj.name %> - <a href="#logout">logout</a></div>
+<div id="header">
+    <div id="logo">
+        <%= $w.image('icons/bar-chart-icon.png') %>
+        Fake Charts Generator
+    </div>
+    <div id="user-bar">
+        <span>
+            <%= obj.name %>
+        </span><a href="#logout">logout</a>
+    </div>
+</div>

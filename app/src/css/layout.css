@@ -1,0 +1,25 @@
+#logo{
+    font-weight: bold;
+    color: #6a94b0;
+    font-size: 18px;
+    display: inline-block;
+    margin: 0 200px 20px 0;
+}
+#user-bar{
+    display: inline-block;
+    vertical-align: top;
+}
+#user-bar > *{
+    display: inline-block;
+    color: #A6823B;
+    margin: 0 0 10px 0;
+    padding: 5px 10px 5px 10px;
+}
+#user-bar > span{
+    background-color: #FFF8D7;
+    border-bottom-left-radius: 5px;
+}
+#user-bar > a{
+    background-color: #FFF2B7;
+    border-bottom-right-radius: 5px;
+}
