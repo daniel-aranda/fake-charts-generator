@@ -474,6 +474,9 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     afterRender : function(){
         this.$label = this.$('label');
         this.$('.control-container').html(this.getControl());
+        if( this.$markup.attr('label') ){
+            this.$label.text(this.$markup.attr('label'));
+        }
     },
     
     getControl : function(){
@@ -1463,7 +1466,7 @@ $w.views.Start = $w.views.Abstract.extend({
     }
  
 });
-$w.views.charts.Editor = $w.views.Abstract.extend({
+$w.views.charts.Editor = $w.controls.UIForm.extend({
 
     template : 'charts_editor',
 
@@ -1474,7 +1477,9 @@ $w.views.charts.Editor = $w.views.Abstract.extend({
     },
 
     afterInitialize : function(){
-        this.model.on('change', this.render);
+        this.model.on('change:user_id', this.render);
+        this.model.on('change:ready', this.render);
+        this.model.on('change:name', this.nameChangeHandler);
     },
 
     afterRender : function(){
@@ -1484,8 +1489,15 @@ $w.views.charts.Editor = $w.views.Abstract.extend({
             return false;
         }
         this.$el.fadeIn();
+        this.nameChangeHandler();
         if( !this.model.get('ready') ){
-            
+
+        }
+    },
+
+    nameChangeHandler : function(){
+        if( this.model.get('name') != this.controls.name.$control.val() ){
+            this.controls.name.$control.val(this.model.get('name'));
         }
     }
 
