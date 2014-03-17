@@ -1,0 +1,11 @@
+#your-charts{
+    min-width: 500px;
+}
+#add-new-chart{
+    float: right;
+}
+#your-charts h3{
+    font-size: 20px;
+    margin: 0;
+    display: inline-block;
+}

@@ -9,7 +9,6 @@ body{
     background-color: #BED3FF;
     margin: 0 20px 20px 20px;
 }
-
 #overlay {
     z-index: 2000;
     background: #3b3f35;
@@ -23,7 +22,7 @@ body{
 }
 
 #loader{
-    background-color: #F8F59C;
+    background-color: #FFF8D7;
     position: fixed;
     display: inline-block;
     top: 0px;
@@ -31,7 +30,6 @@ body{
     margin-left: -10px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    display: none;
 }
 #loader > div{
     padding: 6px;
@@ -48,4 +46,14 @@ body{
     padding: 10px;
     display: inline-block;
     text-align: left;
+}
+
+button{
+    background-color: #3EA8A4;
+    color: #fff;
+    border: none;
+}
+
+h3{
+    color: #6a94b0;
 }

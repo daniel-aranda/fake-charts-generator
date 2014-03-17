@@ -138,7 +138,6 @@ body{
     background-color: #BED3FF;
     margin: 0 20px 20px 20px;
 }
-
 #overlay {
     z-index: 2000;
     background: #3b3f35;
@@ -152,7 +151,7 @@ body{
 }
 
 #loader{
-    background-color: #F8F59C;
+    background-color: #FFF8D7;
     position: fixed;
     display: inline-block;
     top: 0px;
@@ -160,7 +159,6 @@ body{
     margin-left: -10px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
-    display: none;
 }
 #loader > div{
     padding: 6px;
@@ -179,12 +177,26 @@ body{
     text-align: left;
 }
 
+button{
+    background-color: #3EA8A4;
+    color: #fff;
+    border: none;
+}
+
+h3{
+    color: #6a94b0;
+}
+
+#initializing .text{
+    margin: 100px 0 0 0;
+    color: #6a94b0;
+}
 #logo{
     font-weight: bold;
     color: #6a94b0;
     font-size: 18px;
     display: inline-block;
-    margin: 0 200px 20px 0;
+    margin: 10px 200px 20px 0;
 }
 #user-bar{
     display: inline-block;
@@ -204,6 +216,12 @@ body{
     background-color: #FFF2B7;
     border-bottom-right-radius: 5px;
 }
+#footer{
+    margin: 20px 0 0 0;
+}
+#footer a{
+    color: #6a94b0;
+}
 #login-form, #intro{
     margin-top: 50px;
 }
@@ -218,6 +236,9 @@ body{
 #login-form > div > div.validation-message{
     padding-left: 130px;
 }
+#login-form .options a{
+    text-decoration: none;
+}
 #logout-box{
     margin-top: 50px;
 }
@@ -226,4 +247,15 @@ body{
 }
 #intro .source a{
     color: #898989;
+}
+#your-charts{
+    min-width: 500px;
+}
+#add-new-chart{
+    float: right;
+}
+#your-charts h3{
+    font-size: 20px;
+    margin: 0;
+    display: inline-block;
 }

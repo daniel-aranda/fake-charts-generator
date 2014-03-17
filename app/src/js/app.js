@@ -2,6 +2,7 @@ $w.Application = (function (Backbone, _, $) {
     
     var public_scope = {
         initialize : initialize,
+        validateLogin : validateLogin,
         display : display,
         guestDisplay : guestDisplay,
         login : login,
@@ -35,12 +36,18 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function display(view){
-        if( user() ){
+        if( validateLogin() ){
             _mainView.display(view);
-        }else{
+        }
+    }
+
+    function validateLogin(){
+        if( !user() ){
             _lastProtectedRoute = Backbone.history.fragment;
             invalidateLogin();
+            return false;
         }
+        return true;
     }
 
     function displayProtected(){

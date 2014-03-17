@@ -985,8 +985,9 @@ $w.Router = Backbone.Router.extend({
         "logout"                        : "logoutView",   
         "start"                         : "startView",
         "initializing"                  : "initializingView",
-        "project"                       : "projectView",
-        "*path"                         : "defaultRoute"   
+        "new"                           : "newChart",
+        "chart/:id"                     : "chart",
+        "*path"                         : "defaultRoute"
     },
 
     initialize : function(){
@@ -995,6 +996,27 @@ $w.Router = Backbone.Router.extend({
 
     defaultRoute : function() {
         this.go('start');
+    },
+
+    newChart : function(){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var c = new $w.collections.charts.Chart();
+        var newChart = c.add({user_id : $w.Application.user().id})[0];
+        this.go('chart/' + newChart.id);
+    },
+
+    chart : function(id){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var chartModel = new $w.models.charts.RemoteChart({id : id});
+
+        var view = new $w.views.charts.Editor({model : chartModel});
+        this.view(view);
     },
     
     loginView : function(){
@@ -1046,11 +1068,6 @@ $w.Router = Backbone.Router.extend({
         }
     },
 
-    projectView : function(){
-        var view = new $w.views.ProjectIndex();
-        this.view(view);
-    },
-    
     view : function(view){
         $w.Application.display(view);
     },
@@ -1124,6 +1141,17 @@ $w.models.charts.Chart = $w.models.Abstract.extend({
         title : {
             required : [true]
         }
+    }
+
+});
+$w.models.charts.RemoteChart = Backbone.Firebase.Model.extend($w.models.charts.Chart);
+$w.models.charts.RemoteChart = $w.models.charts.RemoteChart.extend({
+
+    firebase : function(){
+        var user_id = $w.Application.user().get('id');
+        var url = $w.Config.server() + 'charts/';
+        url += '/' + this.get('id');
+        return new Firebase(url);
     }
 
 });
@@ -1426,21 +1454,41 @@ $w.views.Start = $w.views.Abstract.extend({
 
     events : function(events){
         var this_events = {
-            'click #add-new-chart' : 'addNewChart'
         };
         return this._super(_.extend(this_events, events));
-    },
-
-    addNewChart : function(){
-        var c = new $w.collections.charts.UserChart();
-        var newChart = c.add({})[0];
-
     },
 
     afterRender : function(){
         this._super();
     }
  
+});
+$w.views.charts.Editor = $w.views.Abstract.extend({
+
+    template : 'charts_editor',
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    afterInitialize : function(){
+        this.model.on('change', this.render);
+    },
+
+    afterRender : function(){
+        this._super();
+        if( !this.model.get('user_id') ){
+            this.$el.hide();
+            return false;
+        }
+        this.$el.fadeIn();
+        if( !this.model.get('ready') ){
+            
+        }
+    }
+
 });
 $w.views.Footer = $w.views.Abstract.extend({
 
@@ -1612,6 +1660,7 @@ $w.Application = (function (Backbone, _, $) {
     
     var public_scope = {
         initialize : initialize,
+        validateLogin : validateLogin,
         display : display,
         guestDisplay : guestDisplay,
         login : login,
@@ -1645,12 +1694,18 @@ $w.Application = (function (Backbone, _, $) {
     }
     
     function display(view){
-        if( user() ){
+        if( validateLogin() ){
             _mainView.display(view);
-        }else{
+        }
+    }
+
+    function validateLogin(){
+        if( !user() ){
             _lastProtectedRoute = Backbone.history.fragment;
             invalidateLogin();
+            return false;
         }
+        return true;
     }
 
     function displayProtected(){

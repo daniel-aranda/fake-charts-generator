@@ -1,5 +1,12 @@
+<script type="text/x-FCK-tpl" class="tpl charts_editor">
+<div>
+    Editor! <%= obj.name %>
+</div></script>
+
 <script type="text/x-FCK-tpl" class="tpl commons_footer">
-Footer</script>
+<div id="footer">
+    <a href="#about">about</a>
+</div></script>
 
 <script type="text/x-FCK-tpl" class="tpl commons_header">
 <div id="header">
@@ -54,12 +61,7 @@ Footer</script>
     <div class="header-holder"></div>
     <div class="content-holder"></div>
     <div class="footer-holder"></div>
-</div>
-<div id="loader">
-    <div>
-        <%= $w.image('layout/loader.gif') %>
-    </div>
-</div>      </script>
+</div></script>
 
 <script type="text/x-FCK-tpl" class="tpl login_login">
 <div>
@@ -116,17 +118,30 @@ Footer</script>
     </div></script>
 
 <script type="text/x-FCK-tpl" class="tpl start_initializing">
-<div>
-    Initializing...
+<div id="initializing">
+    <div id="loader">
+        <div>
+            <%= $w.image('layout/loader.gif') %>
+        </div>
+    </div>
+    <div class="text">
+        Initializing...
+    </div>
 </div></script>
 
 <script type="text/x-FCK-tpl" class="tpl start_start">
-    <div class="content-box">
+    <div id="your-charts" class="content-box">
         <div>
-            <div>
-                <button id="add-new-chart">add new chart</button>
+            <h3>
+                Your Charts
+            </h3>
+            <button id="add-new-chart">new chart</button>
+        </div>
+        <hr />
+        <div class="charts">
+            <div id="no-charts">
+                You don't any have chart, <a href="#new">create</a> the first one
             </div>
-            Your Charts
         </div>
     </div></script>
 

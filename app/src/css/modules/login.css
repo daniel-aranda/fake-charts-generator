@@ -12,6 +12,9 @@
 #login-form > div > div.validation-message{
     padding-left: 130px;
 }
+#login-form .options a{
+    text-decoration: none;
+}
 #logout-box{
     margin-top: 50px;
 }

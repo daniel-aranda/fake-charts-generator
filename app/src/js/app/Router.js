@@ -11,8 +11,9 @@ $w.Router = Backbone.Router.extend({
         "logout"                        : "logoutView",   
         "start"                         : "startView",
         "initializing"                  : "initializingView",
-        "project"                       : "projectView",
-        "*path"                         : "defaultRoute"   
+        "new"                           : "newChart",
+        "chart/:id"                     : "chart",
+        "*path"                         : "defaultRoute"
     },
 
     initialize : function(){
@@ -21,6 +22,27 @@ $w.Router = Backbone.Router.extend({
 
     defaultRoute : function() {
         this.go('start');
+    },
+
+    newChart : function(){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var c = new $w.collections.charts.Chart();
+        var newChart = c.add({user_id : $w.Application.user().id})[0];
+        this.go('chart/' + newChart.id);
+    },
+
+    chart : function(id){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var chartModel = new $w.models.charts.RemoteChart({id : id});
+
+        var view = new $w.views.charts.Editor({model : chartModel});
+        this.view(view);
     },
     
     loginView : function(){
@@ -72,11 +94,6 @@ $w.Router = Backbone.Router.extend({
         }
     },
 
-    projectView : function(){
-        var view = new $w.views.ProjectIndex();
-        this.view(view);
-    },
-    
     view : function(view){
         $w.Application.display(view);
     },
