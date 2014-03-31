@@ -86,6 +86,7 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
         if( this.$markup.attr('label') ){
             this.$label.text(this.$markup.attr('label'));
         }
+        this.modelValueToControl();
     },
     
     getControl : function(){

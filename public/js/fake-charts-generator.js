@@ -477,6 +477,7 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
         if( this.$markup.attr('label') ){
             this.$label.text(this.$markup.attr('label'));
         }
+        this.modelValueToControl();
     },
     
     getControl : function(){
@@ -1479,7 +1480,6 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
     afterInitialize : function(){
         this.model.on('change:user_id', this.render);
         this.model.on('change:ready', this.render);
-        this.model.on('change:name', this.nameChangeHandler);
     },
 
     afterRender : function(){
@@ -1489,15 +1489,8 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             return false;
         }
         this.$el.fadeIn();
-        this.nameChangeHandler();
         if( !this.model.get('ready') ){
 
-        }
-    },
-
-    nameChangeHandler : function(){
-        if( this.model.get('name') != this.controls.name.$control.val() ){
-            this.controls.name.$control.val(this.model.get('name'));
         }
     }
 
