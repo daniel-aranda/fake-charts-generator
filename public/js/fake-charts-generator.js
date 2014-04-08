@@ -990,7 +990,7 @@ $w.Router = Backbone.Router.extend({
         "start"                         : "startView",
         "initializing"                  : "initializingView",
         "new"                           : "newChart",
-        "chart/:id"                     : "chart",
+        "create-chart/:id"               : "createChart",
         "*path"                         : "defaultRoute"
     },
 
@@ -1009,10 +1009,10 @@ $w.Router = Backbone.Router.extend({
 
         var c = new $w.collections.charts.Chart();
         var newChart = c.add({user_id : $w.Application.user().id})[0];
-        this.go('chart/' + newChart.id);
+        this.go('create-chart/' + newChart.id);
     },
 
-    chart : function(id){
+    createChart : function(id){
         if( !$w.Application.validateLogin() ){
             return null;
         }
@@ -1489,9 +1489,10 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             return false;
         }
         this.$el.fadeIn();
-        if( !this.model.get('ready') ){
-
+        if( this.model.get('ready') ){
+            //TODO: redirect to chart page
         }
+        this.controls.name.$control.focus();
     }
 
 });

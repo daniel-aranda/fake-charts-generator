@@ -20,9 +20,10 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             return false;
         }
         this.$el.fadeIn();
-        if( !this.model.get('ready') ){
-
+        if( this.model.get('ready') ){
+            //TODO: redirect to chart page
         }
+        this.controls.name.$control.focus();
     }
 
 });
