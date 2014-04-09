@@ -83,9 +83,10 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     afterRender : function(){
         this.$label = this.$('label');
         this.$('.control-container').html(this.getControl());
-        if( this.$markup.attr('label') ){
-            this.$label.text(this.$markup.attr('label'));
-        }
+
+        this.validateControlId();
+        this.validateLabel();
+
         this.modelValueToControl();
     },
     
@@ -101,7 +102,13 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     },
     
     invalidateControl : function(){
-        throw 'You should replace this in the child class';
+        var template = this.getControlTemplate();
+        this.$control = $(template);
+        return this.$control;
+    },
+
+    getControlTemplate : function(){
+        throw 'You should overwrite this';
     },
     
     enable : function(){
@@ -110,6 +117,38 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     
     disable : function(){
        this.$control.attr("disabled","disabled"); 
+    },
+
+    validateLabel : function(){
+        if( $w.util.isEmpty( this.$label.attr('for') ) ){
+            this.$label.attr('for', this.$control.attr('id'));
+        }
+        if( this.$markup.attr('label') ){
+            this.$label.text(this.$markup.attr('label'));
+        }
+    },
+
+    validateControlId : function(){
+        if( !this.$control ){
+            throw 'setControlId should be called after $control is defined';
+        }
+
+        if( !$w.util.isEmpty(this.$control.attr('id')) ){
+            return null;
+        }
+
+        this.invalidateControlId();
+    },
+
+    invalidateControlId : function(){
+        if( this.$markup.attr('id') ){
+            this.$control.attr('id', this.$markup.attr('id'));
+
+        }else{
+            var id = 'checkbox_' + new Date().getTime();
+            id += Math.round(Math.random() * 100);
+            this.$control.attr('id', id);
+        }
     }
 
 });

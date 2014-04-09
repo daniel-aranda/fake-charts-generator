@@ -15,12 +15,16 @@ $w.controls.TextField = $w.controls.ComponentAbstract.extend({
     },
     
     invalidateControl : function(){
-        var template = $w.tpl.getTemplate('form_textfield');
-        this.$control = $(template);
+        this._super();
         if( this.$markup.attr('type') ){
             this.$control.attr('type', this.$markup.attr('type'));
         }
         return this.$control;
+    },
+
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_textfield');
     }
+
 
 });

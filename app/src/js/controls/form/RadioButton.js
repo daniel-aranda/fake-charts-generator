@@ -1,4 +1,4 @@
-$w.controls.CheckBox = $w.controls.ComponentAbstract.extend({
+$w.controls.RadioButton = $w.controls.ComponentAbstract.extend({
 
     events : function(events){
         var this_events = {
@@ -29,7 +29,7 @@ $w.controls.CheckBox = $w.controls.ComponentAbstract.extend({
     },
 
     getControlTemplate : function(){
-        return $w.tpl.getTemplate('form_checkbox');
+        return $w.tpl.getTemplate('form_radiobutton');
     }
 
 });

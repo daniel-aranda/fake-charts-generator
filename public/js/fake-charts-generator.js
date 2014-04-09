@@ -474,9 +474,10 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     afterRender : function(){
         this.$label = this.$('label');
         this.$('.control-container').html(this.getControl());
-        if( this.$markup.attr('label') ){
-            this.$label.text(this.$markup.attr('label'));
-        }
+
+        this.validateControlId();
+        this.validateLabel();
+
         this.modelValueToControl();
     },
     
@@ -492,7 +493,13 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     },
     
     invalidateControl : function(){
-        throw 'You should replace this in the child class';
+        var template = this.getControlTemplate();
+        this.$control = $(template);
+        return this.$control;
+    },
+
+    getControlTemplate : function(){
+        throw 'You should overwrite this';
     },
     
     enable : function(){
@@ -501,6 +508,38 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     
     disable : function(){
        this.$control.attr("disabled","disabled"); 
+    },
+
+    validateLabel : function(){
+        if( $w.util.isEmpty( this.$label.attr('for') ) ){
+            this.$label.attr('for', this.$control.attr('id'));
+        }
+        if( this.$markup.attr('label') ){
+            this.$label.text(this.$markup.attr('label'));
+        }
+    },
+
+    validateControlId : function(){
+        if( !this.$control ){
+            throw 'setControlId should be called after $control is defined';
+        }
+
+        if( !$w.util.isEmpty(this.$control.attr('id')) ){
+            return null;
+        }
+
+        this.invalidateControlId();
+    },
+
+    invalidateControlId : function(){
+        if( this.$markup.attr('id') ){
+            this.$control.attr('id', this.$markup.attr('id'));
+
+        }else{
+            var id = 'checkbox_' + new Date().getTime();
+            id += Math.round(Math.random() * 100);
+            this.$control.attr('id', id);
+        }
     }
 
 });
@@ -519,10 +558,6 @@ $w.controls.CheckBox = $w.controls.ComponentAbstract.extend({
         if( !this._rendered ){
             this.$el.prepend('<div class="left-wrapper" />');
             this.$('.control-container').after(this.$label);
-            if( $w.util.isEmpty( this.$label.css('for') ) ){
-                this.setControlId();
-                this.$label.attr('for', this.$control.attr('id'));
-            }
         }
     },
 
@@ -538,22 +573,43 @@ $w.controls.CheckBox = $w.controls.ComponentAbstract.extend({
         }
     },
 
-    invalidateControl : function(){
-        var template = $w.tpl.getTemplate('form_checkbox');
-        this.$control = $(template);
-        if( this.$markup.attr('label') ){
-            this.$label.html(this.$markup.attr('label'));
-        }
-        return this.$control;
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_checkbox');
+    }
+
+});
+$w.controls.RadioButton = $w.controls.ComponentAbstract.extend({
+
+    events : function(events){
+        var this_events = {
+            'change input' : this.inputChangeHandler
+        };
+        return this._super(_.extend(this_events, events));
     },
 
-    setControlId : function(){
-        if( !$w.util.isEmpty(this.$control.attr('id')) ){
-            return null;
+    afterRender : function(){
+        this._super();
+
+        if( !this._rendered ){
+            this.$el.prepend('<div class="left-wrapper" />');
+            this.$('.control-container').after(this.$label);
         }
-        var id = 'checkbox_' + new Date().getTime();
-        id += Math.round(Math.random() * 100);
-        this.$control.attr('id', id);
+    },
+
+    controlValueToModel : function(){
+        this.model.set( this.field, this.$control.is(':checked') );
+    },
+
+    modelValueToControl : function(){
+        if( this.model.get(this.field) ){
+            this.$control.prop('checked', true);
+        }else{
+            this.$control.prop('checked', false);
+        }
+    },
+
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_radiobutton');
     }
 
 });
@@ -567,10 +623,8 @@ $w.controls.TextArea = $w.controls.ComponentAbstract.extend({
         return this._super(_.extend(this_events, events));
     },
     
-    invalidateControl : function(){
-        var template = $w.tpl.getTemplate('form_textarea');
-        this.$control = $(template);
-        return this.$control;
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_textarea');
     }
 
 });
@@ -591,13 +645,17 @@ $w.controls.TextField = $w.controls.ComponentAbstract.extend({
     },
     
     invalidateControl : function(){
-        var template = $w.tpl.getTemplate('form_textfield');
-        this.$control = $(template);
+        this._super();
         if( this.$markup.attr('type') ){
             this.$control.attr('type', this.$markup.attr('type'));
         }
         return this.$control;
+    },
+
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_textfield');
     }
+
 
 });
 $w.controls.UIForm = $w.views.Abstract.extend({
@@ -656,6 +714,9 @@ $w.controls.UIForm = $w.views.Abstract.extend({
         if( $element.hasClass("checkbox") ){
             control = this.createCheckBox($element, options);
         }
+        if( $element.hasClass("radiobutton") ){
+            control = this.createRadioButton($element, options);
+        }
 
         if( !control ){
             throw 'Uknown component: ' + $element[0].className;
@@ -675,6 +736,10 @@ $w.controls.UIForm = $w.views.Abstract.extend({
     
     createCheckBox : function($element, options){
         return new $w.controls.CheckBox(options);
+    },
+
+    createRadioButton : function($element, options){
+        return new $w.controls.RadioButton(options);
     },
 
     enable : function(){

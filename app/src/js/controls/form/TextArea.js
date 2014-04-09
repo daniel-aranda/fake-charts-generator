@@ -8,10 +8,8 @@ $w.controls.TextArea = $w.controls.ComponentAbstract.extend({
         return this._super(_.extend(this_events, events));
     },
     
-    invalidateControl : function(){
-        var template = $w.tpl.getTemplate('form_textarea');
-        this.$control = $(template);
-        return this.$control;
+    getControlTemplate : function(){
+        return $w.tpl.getTemplate('form_textarea');
     }
 
 });

@@ -54,6 +54,9 @@ $w.controls.UIForm = $w.views.Abstract.extend({
         if( $element.hasClass("checkbox") ){
             control = this.createCheckBox($element, options);
         }
+        if( $element.hasClass("radiobutton") ){
+            control = this.createRadioButton($element, options);
+        }
 
         if( !control ){
             throw 'Uknown component: ' + $element[0].className;
@@ -73,6 +76,10 @@ $w.controls.UIForm = $w.views.Abstract.extend({
     
     createCheckBox : function($element, options){
         return new $w.controls.CheckBox(options);
+    },
+
+    createRadioButton : function($element, options){
+        return new $w.controls.RadioButton(options);
     },
 
     enable : function(){
