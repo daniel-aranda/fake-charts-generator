@@ -42,7 +42,8 @@ $w.controls.UIForm = $w.views.Abstract.extend({
 
         var options = {
             model : this.model,
-            el : $element
+            el : $element,
+            form : this
         };
         
         if( $element.hasClass("textfield") ){
@@ -61,7 +62,6 @@ $w.controls.UIForm = $w.views.Abstract.extend({
         if( !control ){
             throw 'Uknown component: ' + $element[0].className;
         }
-        
         control.render();
         this.controls[ control.field ] = control;
     },

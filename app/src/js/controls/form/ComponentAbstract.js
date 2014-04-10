@@ -14,6 +14,8 @@ $w.controls.ComponentAbstract = $w.views.Abstract.extend({
         }   
         this.$markup = this.$el.clone();
         this.field = this.$el.attr('name');
+        this.form = this.options.form;
+        this.$form = this.form.$el;
         
         if( !this.field ){
             throw 'Name is required for UI controls';

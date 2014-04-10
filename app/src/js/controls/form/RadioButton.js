@@ -17,15 +17,30 @@ $w.controls.RadioButton = $w.controls.ComponentAbstract.extend({
     },
 
     controlValueToModel : function(){
-        this.model.set( this.field, this.$control.is(':checked') );
+        if( this.$control.is(':checked') ){
+            var value = this.$control.val();
+            this.model.set( this.field,  value);
+        }
     },
 
     modelValueToControl : function(){
-        if( this.model.get(this.field) ){
+        if( this.model.get(this.field) && this.model.get(this.field) == this.$control.val() ){
             this.$control.prop('checked', true);
         }else{
             this.$control.prop('checked', false);
         }
+    },
+
+    invalidateControl : function(){
+        this._super();
+
+        if( !this.$markup.attr('value') ){
+            throw 'Attribute value is required for RadioButtons';
+        }
+
+        this.$control.attr('name', this.$markup.attr('name'));
+        this.$control.attr('value', this.$markup.attr('value'));
+        return this.$control;
     },
 
     getControlTemplate : function(){
