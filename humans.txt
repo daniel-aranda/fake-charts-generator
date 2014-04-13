@@ -1,0 +1,14 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Daniel Aranda Ochoa - CEO
+
+# THANKS
+
+    My Family
+
+# TECHNOLOGY COLOPHON
+
+    Backbone.js, PHP, jQuery, MySQL

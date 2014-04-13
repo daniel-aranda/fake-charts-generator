@@ -1,0 +1,232 @@
+<script type="text/x-FCK-tpl" class="tpl charts_editor">
+<div class="content-box">
+    <h2>Chart Properties</h2>
+    <div>
+        <div class="ui-control textfield" type="text" name="name" label="name:"></div>
+    </div>
+    <div>
+        <div class="ui-control radiobutton" name="chart_type" label="area" value="area"></div>
+        <div class="ui-control radiobutton" name="chart_type" label="linear" value="linear"></div>
+    </div>
+    <div>
+        <button>create</button>
+    </div>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl commons_footer">
+<div id="footer">
+    <a href="#about">about</a>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl commons_header">
+<div id="header">
+    <div id="logo">
+        <%= $w.image('icons/bar-chart-icon.png') %>
+        Fake Charts Generator
+    </div>
+    <div id="user-bar">
+        <span>
+            <%= obj.name %>
+        </span><a href="#logout">logout</a>
+    </div>
+</div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl form_checkbox">
+<input type="checkbox" /></script>
+
+<script type="text/x-FCK-tpl" class="tpl form_formelement">
+    <label><%= obj.field %></label>
+    <div class="control-container"></div>
+    <div class="validation-message"></div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl form_radiobutton">
+<input type="radio" /></script>
+
+<script type="text/x-FCK-tpl" class="tpl form_textarea">
+<textarea></textarea></script>
+
+<script type="text/x-FCK-tpl" class="tpl form_textfield">
+<input type="text" /></script>
+
+<script type="text/x-FCK-tpl" class="tpl popup_alert">
+<div class="alert_message">
+    <%= $w.image('icons/error.png') %>
+    <div class="alert_error_message"><%= content %></div>
+</div>
+<br/>
+<div class="buttons one_button">
+    <%= $w.submitButton(button_label) %>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl popup_window">
+<div class='window_header'>
+    <span class="window_title"><%= title %></span>
+    <div class="window_close">x</div>
+</div>
+<div class="window_content">
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl layout_default">
+<div id="overlay" ></div>
+<div id="layout" class="default">
+    <div class="header-holder"></div>
+    <div class="content-holder"></div>
+    <div class="footer-holder"></div>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl login_login">
+<div>
+    <div id="intro" class="content-box">
+        <%= $w.image('icons/bar-chart-icon-big.png') %>
+        <div>
+            <h2>
+                Fake Charts Generator
+            </h2>
+            <p>
+                By: <a href="http://danielarandaochoa.com">Daniel Aranda</a>
+            </p>
+            <p class="source">
+                <a href="https://github.com/daniel-aranda/fake-charts-generator">Source</a>
+            </p>
+        </div>
+    </div>
+</div>
+<div>
+    <div id="login-form" class="content-box form">
+        <h3>
+            You need to login in order to continue
+        </h3>
+        <hr />
+        <p>
+            Login with:
+        </p>
+        <div class="options">
+            <a href="javascript:;" class="twitter">
+                <%= $w.image('icons/twitter.png') %>
+            </a>
+            <a href="javascript:;" class="github">
+                <%= $w.image('icons/github.png') %>
+            </a>
+            <a href="javascript:;" class="google">
+                <%= $w.image('icons/google.png') %>
+            </a>
+            <a href="javascript:;" class="facebook">
+                <%= $w.image('icons/facebook.png') %>
+            </a>
+        </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl login_logout">
+    <div id="logout-box" class="content-box">
+        logout
+    </div></script>
+
+<script type="text/x-FCK-tpl" class="tpl project_index">
+    <div class="content-box">
+        Project 1 \o/
+    </div></script>
+
+<script type="text/x-FCK-tpl" class="tpl start_initializing">
+<div id="initializing">
+    <div id="loader">
+        <div>
+            <%= $w.image('layout/loader.gif') %>
+        </div>
+    </div>
+    <div class="text">
+        Initializing...
+    </div>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl start_start">
+    <div id="your-charts" class="content-box">
+        <div>
+            <h3>
+                Your Charts
+            </h3>
+            <button id="add-new-chart">new chart</button>
+        </div>
+        <hr />
+        <div class="charts">
+            <div id="no-charts">
+                You don't any have chart, <a href="#new">create</a> the first one
+            </div>
+        </div>
+    </div></script>
+
+<script type="text/x-FCK-tpl" class="tpl user_forgot-password">
+    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="email" name="email"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('send verification email') %>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl user_register">
+<div id="login-form" class="content-box form">
+    
+    <div class="ui-control textfield" name="email"></div>
+    <div class="ui-control textfield" type="password" name="password"></div>
+    
+    <div>
+        <div class="form_errors validation-message"></div>
+    </div>
+    <div>
+        <label>&nbsp; </label>
+        <input type="button" class="submit" value="create" />
+    </div>
+</div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl user_reset-password">
+    <div id="login-form" class="content-box form">
+        <p>
+            Password reset
+        </p>
+        <div class="ui-control textfield" type="password" name="password"></div>
+        <div class="ui-control textfield" type="password" name="confirm_password"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('set new password') %>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl user_validate-hash">
+    <div id="login-form" class="content-box form">
+        <h3>
+            Password reset
+        </h3>
+        <p>
+            Please type the hash that you received by Email in order to enable the 
+            password reset.
+        </p>
+        <div class="ui-control textarea" type="text" name="hash"></div>
+        
+        <div>
+            <div class="form_errors validation-message"></div>
+        </div>
+        <div>
+            <label>&nbsp; </label>
+            <%= $w.submitButton('validate hash') %>
+            <%= $w.cancelButton() %>
+        </div>
+    </div>
+</script>
