@@ -1,15 +1,28 @@
-<script type="text/x-FCK-tpl" class="tpl charts_editor">
+<script type="text/x-FCK-tpl" class="tpl charts_create-form">
 <div class="content-box">
     <h2>Chart Properties</h2>
     <div>
         <div class="ui-control textfield" type="text" name="name" label="name:"></div>
     </div>
     <div>
-        <div class="ui-control radiobutton" name="chart_type" label="area" value="area"></div>
+        <div class="ui-control radiobutton" name="chart_type" label="3d Donut" value="donut"></div>
         <div class="ui-control radiobutton" name="chart_type" label="linear" value="linear"></div>
     </div>
     <div>
-        <button>create</button>
+        <button class="btn-create">create</button>
+    </div>
+</div></script>
+
+<script type="text/x-FCK-tpl" class="tpl charts_donut">
+    <svg>
+        <g></g>
+    </svg>
+</script>
+
+<script type="text/x-FCK-tpl" class="tpl charts_editor">
+<div class="content-box">
+    <h3><%= obj.name %></h3>
+    <div class="chart-container">
     </div>
 </div></script>
 
@@ -21,8 +34,10 @@
 <script type="text/x-FCK-tpl" class="tpl commons_header">
 <div id="header">
     <div id="logo">
-        <%= $w.image('icons/bar-chart-icon.png') %>
-        Fake Charts Generator
+        <a href="#start">
+            <%= $w.image('icons/bar-chart-icon.png') %>
+            Fake Charts Generator
+        </a>
     </div>
     <div id="user-bar">
         <span>
@@ -125,11 +140,6 @@
         logout
     </div></script>
 
-<script type="text/x-FCK-tpl" class="tpl project_index">
-    <div class="content-box">
-        Project 1 \o/
-    </div></script>
-
 <script type="text/x-FCK-tpl" class="tpl start_initializing">
 <div id="initializing">
     <div id="loader">
@@ -153,7 +163,7 @@
         <hr />
         <div class="charts">
             <div id="no-charts">
-                You don't any have chart, <a href="#new">create</a> the first one
+                You don't any have chart, <a href="javascript:;" id="new-chart-link">create</a> the first one
             </div>
         </div>
     </div></script>

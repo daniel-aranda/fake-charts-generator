@@ -1071,8 +1071,8 @@ $w.Router = Backbone.Router.extend({
         "logout"                        : "logoutView",   
         "start"                         : "startView",
         "initializing"                  : "initializingView",
-        "new"                           : "newChart",
-        "create-chart/:id"               : "createChart",
+        "create-chart/:id"              : "createChart",
+        "editor/:id"                    : "editorChart",
         "*path"                         : "defaultRoute"
     },
 
@@ -1101,10 +1101,21 @@ $w.Router = Backbone.Router.extend({
 
         var chartModel = new $w.models.charts.RemoteChart({id : id});
 
+        var view = new $w.views.charts.CreateForm({model : chartModel});
+        this.view(view);
+    },
+
+    editorChart : function(id){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var chartModel = new $w.models.charts.RemoteChart({id : id});
+
         var view = new $w.views.charts.Editor({model : chartModel});
         this.view(view);
     },
-    
+
     loginView : function(){
         var model = new $w.models.User();
         var view = new $w.views.Login({model : model});
@@ -1540,21 +1551,28 @@ $w.views.Start = $w.views.Abstract.extend({
 
     events : function(events){
         var this_events = {
+            'click #add-new-chart' : 'addNewChart',
+            'click #new-chart-link' : 'addNewChart'
         };
         return this._super(_.extend(this_events, events));
     },
 
     afterRender : function(){
         this._super();
+    },
+
+    addNewChart : function(){
+        $w.global.router.newChart();
     }
  
 });
-$w.views.charts.Editor = $w.controls.UIForm.extend({
+$w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
-    template : 'charts_editor',
+    template : 'charts_create-form',
 
     events : function(events){
         var this_events = {
+            'click .btn-create' : 'createClickHandler'
         };
         return this._super(_.extend(this_events, events));
     },
@@ -1570,11 +1588,101 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             this.$el.hide();
             return false;
         }
-        this.$el.fadeIn();
         if( this.model.get('ready') ){
-            //TODO: redirect to chart page
+            $w.global.router.go('editor/' + this.model.get('id'));
+            return false;
         }
+        this.$el.fadeIn();
         this.controls.name.$control.focus();
+    },
+
+    createClickHandler : function(){
+        this.model.set({ready : true});
+    }
+
+});
+$w.views.charts.Donut = $w.controls.UIForm.extend({
+
+    template : 'charts_donut',
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    afterInitialize : function(){
+        this.model.on('change:ready', this.render);
+    },
+
+    afterRender : function(){
+        this._super();
+        var salesData=[
+            {label:"Basic", color:"#3366CC"},
+            {label:"Plus", color:"#DC3912"},
+            {label:"Lite", color:"#FF9900"},
+            {label:"Elite", color:"#109618"},
+            {label:"Delux", color:"#990099"}
+        ];
+
+        var chartContainer = this.$('svg')[0];
+        var svg = d3.select(chartContainer).attr("width",700).attr("height",300);
+        var chartNode = this.$('svg g')[0];
+
+        Donut3D.draw(chartNode, randomData(), 150, 150, 130, 100, 40, 0.4);
+
+        function changeData(){
+            Donut3D.transition(chartNode, randomData(), 130, 100, 30, 0.4);
+        }
+
+        setInterval(changeData, 3000);
+
+        function randomData(){
+            return salesData.map(function(d){
+                return {label:d.label, value:1000*Math.random(), color:d.color};});
+        }
+
+    }
+
+});
+$w.views.charts.Editor = $w.views.Abstract.extend({
+
+    template : 'charts_editor',
+    chart : null,
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    afterInitialize : function(){
+        this.model.on('change:ready', this.render);
+    },
+
+    afterRender : function(){
+        this._super();
+        if( !this.model.get('ready') ){
+            this.$el.hide();
+            return false;
+        }
+        this.$el.fadeIn();
+        this.invalidateChart();
+
+        this.$('.chart-container').append(this.chart.el);
+        this.chart.render();
+
+    },
+
+    invalidateChart : function(){
+        var chartType = this.model.get('chart_type');
+        switch(chartType){
+            case 'donut':
+                this.chart = new $w.views.charts.Donut({model : this.model});
+                break;
+            default:
+                throw 'Invalid chart type: ' + chartType;
+        }
     }
 
 });

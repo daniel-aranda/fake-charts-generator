@@ -193,10 +193,15 @@ h3{
 }
 #logo{
     font-weight: bold;
-    color: #6a94b0;
-    font-size: 18px;
     display: inline-block;
     margin: 10px 200px 20px 0;
+}
+#logo a{
+    color: #6a94b0;
+    font-size: 18px;
+}
+#logo a:hover{
+    text-decoration: none;
 }
 #user-bar{
     display: inline-block;
@@ -221,6 +226,20 @@ h3{
 }
 #footer a{
     color: #6a94b0;
+}
+.donut_3d path.slice{
+    stroke-width:2px;
+}
+.donut_3d polyline{
+    opacity: .3;
+    stroke: black;
+    stroke-width: 2px;
+    fill: none;
+}
+.donut_3d svg text.percent{
+    fill:white;
+    text-anchor:middle;
+    font-size:12px;
 }
 #login-form, #intro{
     margin-top: 50px;
