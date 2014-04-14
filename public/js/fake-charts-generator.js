@@ -1072,7 +1072,8 @@ $w.Router = Backbone.Router.extend({
         "start"                         : "startView",
         "initializing"                  : "initializingView",
         "new"                           : "newChart",
-        "create-chart/:id"               : "createChart",
+        "create-chart/:id"              : "createChart",
+        "editor/:id"                    : "editorChart",
         "*path"                         : "defaultRoute"
     },
 
@@ -1101,10 +1102,21 @@ $w.Router = Backbone.Router.extend({
 
         var chartModel = new $w.models.charts.RemoteChart({id : id});
 
+        var view = new $w.views.charts.CreateForm({model : chartModel});
+        this.view(view);
+    },
+
+    editorChart : function(id){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var chartModel = new $w.models.charts.RemoteChart({id : id});
+
         var view = new $w.views.charts.Editor({model : chartModel});
         this.view(view);
     },
-    
+
     loginView : function(){
         var model = new $w.models.User();
         var view = new $w.views.Login({model : model});
@@ -1540,18 +1552,23 @@ $w.views.Start = $w.views.Abstract.extend({
 
     events : function(events){
         var this_events = {
+            'click #add-new-chart' : 'addNewChart'
         };
         return this._super(_.extend(this_events, events));
     },
 
     afterRender : function(){
         this._super();
+    },
+
+    addNewChart : function(){
+        $w.global.router.go('new');
     }
  
 });
-$w.views.charts.Editor = $w.controls.UIForm.extend({
+$w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
-    template : 'charts_editor',
+    template : 'charts_create-form',
 
     events : function(events){
         var this_events = {
@@ -1572,9 +1589,32 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
         }
         this.$el.fadeIn();
         if( this.model.get('ready') ){
-            //TODO: redirect to chart page
+            $w.global.router.go('editor/' + this.model.get('id'));
         }
         this.controls.name.$control.focus();
+    }
+
+});
+$w.views.charts.Editor = $w.controls.UIForm.extend({
+
+    template : 'charts_editor',
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    afterInitialize : function(){
+        this.model.on('change:ready', this.render);
+    },
+
+    afterRender : function(){
+        this._super();
+        if( !this.model.get('ready') ){
+            this.$el.hide();
+            return false;
+        }
     }
 
 });

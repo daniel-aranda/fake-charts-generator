@@ -12,7 +12,8 @@ $w.Router = Backbone.Router.extend({
         "start"                         : "startView",
         "initializing"                  : "initializingView",
         "new"                           : "newChart",
-        "create-chart/:id"               : "createChart",
+        "create-chart/:id"              : "createChart",
+        "editor/:id"                    : "editorChart",
         "*path"                         : "defaultRoute"
     },
 
@@ -41,10 +42,21 @@ $w.Router = Backbone.Router.extend({
 
         var chartModel = new $w.models.charts.RemoteChart({id : id});
 
+        var view = new $w.views.charts.CreateForm({model : chartModel});
+        this.view(view);
+    },
+
+    editorChart : function(id){
+        if( !$w.Application.validateLogin() ){
+            return null;
+        }
+
+        var chartModel = new $w.models.charts.RemoteChart({id : id});
+
         var view = new $w.views.charts.Editor({model : chartModel});
         this.view(view);
     },
-    
+
     loginView : function(){
         var model = new $w.models.User();
         var view = new $w.views.Login({model : model});

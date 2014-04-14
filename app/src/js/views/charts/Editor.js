@@ -9,21 +9,15 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
     },
 
     afterInitialize : function(){
-        this.model.on('change:user_id', this.render);
         this.model.on('change:ready', this.render);
     },
 
     afterRender : function(){
         this._super();
-        if( !this.model.get('user_id') ){
+        if( !this.model.get('ready') ){
             this.$el.hide();
             return false;
         }
-        this.$el.fadeIn();
-        if( this.model.get('ready') ){
-            //TODO: redirect to chart page
-        }
-        this.controls.name.$control.focus();
     }
 
 });
