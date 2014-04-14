@@ -18,6 +18,7 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             this.$el.hide();
             return false;
         }
+        this.$el.show();
     }
 
 });

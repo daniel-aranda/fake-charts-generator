@@ -1572,6 +1572,7 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
     events : function(events){
         var this_events = {
+            'click .btn-create' : 'createClickHandler'
         };
         return this._super(_.extend(this_events, events));
     },
@@ -1587,11 +1588,16 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
             this.$el.hide();
             return false;
         }
-        this.$el.fadeIn();
         if( this.model.get('ready') ){
             $w.global.router.go('editor/' + this.model.get('id'));
+            return false;
         }
+        this.$el.fadeIn();
         this.controls.name.$control.focus();
+    },
+
+    createClickHandler : function(){
+        this.model.set({ready : true});
     }
 
 });
@@ -1615,6 +1621,7 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             this.$el.hide();
             return false;
         }
+        this.$el.show();
     }
 
 });
