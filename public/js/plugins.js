@@ -60,7 +60,7 @@
 				Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
 	}	
 	
-	Donut3D.transition = function(id, data, rx, ry, h, ir){
+	Donut3D.transition = function(node, data, rx, ry, h, ir){
 		function arcTweenInner(a) {
 		  var i = d3.interpolate(this._current, a);
 		  this._current = i(0);
@@ -89,25 +89,25 @@
 		
 		var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
 		
-		d3.select("#"+id).selectAll(".innerSlice").data(_data)
+		d3.select(node).selectAll(".innerSlice").data(_data)
 			.transition().duration(750).attrTween("d", arcTweenInner); 
 			
-		d3.select("#"+id).selectAll(".topSlice").data(_data)
+		d3.select(node).selectAll(".topSlice").data(_data)
 			.transition().duration(750).attrTween("d", arcTweenTop); 
 			
-		d3.select("#"+id).selectAll(".outerSlice").data(_data)
+		d3.select(node).selectAll(".outerSlice").data(_data)
 			.transition().duration(750).attrTween("d", arcTweenOuter); 	
 			
-		d3.select("#"+id).selectAll(".percent").data(_data).transition().duration(750)
+		d3.select(node).selectAll(".percent").data(_data).transition().duration(750)
 			.attrTween("x",textTweenX).attrTween("y",textTweenY).text(getPercent); 	
 	}
 	
-	Donut3D.draw=function(id, data, x /*center x*/, y/*center y*/, 
+	Donut3D.draw=function(node, data, x /*center x*/, y/*center y*/, 
 			rx/*radius x*/, ry/*radius y*/, h/*height*/, ir/*inner radius*/){
 	
 		var _data = d3.layout.pie().sort(null).value(function(d) {return d.value;})(data);
 		
-		var slices = d3.select("#"+id).append("g").attr("transform", "translate(" + x + "," + y + ")")
+		var slices = d3.select(node).append("g").attr("transform", "translate(" + x + "," + y + ")")
 			.attr("class", "slices");
 			
 		slices.selectAll(".innerSlice").data(_data).enter().append("path").attr("class", "innerSlice")

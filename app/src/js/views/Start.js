@@ -4,7 +4,8 @@ $w.views.Start = $w.views.Abstract.extend({
 
     events : function(events){
         var this_events = {
-            'click #add-new-chart' : 'addNewChart'
+            'click #add-new-chart' : 'addNewChart',
+            'click #new-chart-link' : 'addNewChart'
         };
         return this._super(_.extend(this_events, events));
     },
@@ -14,7 +15,7 @@ $w.views.Start = $w.views.Abstract.extend({
     },
 
     addNewChart : function(){
-        $w.global.router.go('new');
+        $w.global.router.newChart();
     }
  
 });

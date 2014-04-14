@@ -1,6 +1,7 @@
-$w.views.charts.Editor = $w.controls.UIForm.extend({
+$w.views.charts.Editor = $w.views.Abstract.extend({
 
     template : 'charts_editor',
+    chart : null,
 
     events : function(events){
         var this_events = {
@@ -18,7 +19,23 @@ $w.views.charts.Editor = $w.controls.UIForm.extend({
             this.$el.hide();
             return false;
         }
-        this.$el.show();
+        this.$el.fadeIn();
+        this.invalidateChart();
+
+        this.$('.chart-container').append(this.chart.el);
+        this.chart.render();
+
+    },
+
+    invalidateChart : function(){
+        var chartType = this.model.get('chart_type');
+        switch(chartType){
+            case 'donut':
+                this.chart = new $w.views.charts.Donut({model : this.model});
+                break;
+            default:
+                throw 'Invalid chart type: ' + chartType;
+        }
     }
 
 });

@@ -11,7 +11,6 @@ $w.Router = Backbone.Router.extend({
         "logout"                        : "logoutView",   
         "start"                         : "startView",
         "initializing"                  : "initializingView",
-        "new"                           : "newChart",
         "create-chart/:id"              : "createChart",
         "editor/:id"                    : "editorChart",
         "*path"                         : "defaultRoute"

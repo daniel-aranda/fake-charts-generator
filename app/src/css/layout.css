@@ -4,10 +4,15 @@
 }
 #logo{
     font-weight: bold;
-    color: #6a94b0;
-    font-size: 18px;
     display: inline-block;
     margin: 10px 200px 20px 0;
+}
+#logo a{
+    color: #6a94b0;
+    font-size: 18px;
+}
+#logo a:hover{
+    text-decoration: none;
 }
 #user-bar{
     display: inline-block;
