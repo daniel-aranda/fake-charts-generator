@@ -23,7 +23,7 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         ];
 
         var chartContainer = this.$('svg')[0];
-        var svg = d3.select(chartContainer).attr("width",700).attr("height",300);
+        var svg = d3.select(chartContainer).attr("width",400).attr("height",300);
         var chartNode = this.$('svg g')[0];
 
         Donut3D.draw(chartNode, randomData(), 150, 150, 130, 100, 40, 0.4);

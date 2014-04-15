@@ -1193,7 +1193,9 @@ $w.models.User = $w.models.Abstract.extend({
         email : '',  
         password : '',  
         first_name : '',  
-        last_name : ''  
+        last_name : '',
+        profile_picture_url : null,
+        provider : null
     },
     
     validations :{
@@ -1205,13 +1207,42 @@ $w.models.User = $w.models.Abstract.extend({
         }  
     },
 
+    getProfilePicture : function(){
+        if( !this.get('provider') ){
+            return null;
+        }
+
+        var url = '';
+
+        switch(this.get('provider')){
+            case 'facebook':
+                url = 'http://graph.facebook.com/' + this.get('username') +'/picture';
+                break;
+            case 'google':
+                url = this.get('thirdPartyUserData').picture;
+                break;
+            case 'twitter':
+                url = this.get('profile_image_url');
+                break;
+            case 'github':
+                url = this.get('avatar_url');
+                break;
+            default:
+                throw 'Unknown provider for the user: ' + this.get('provider');
+        }
+        return url;
+    },
+
     getKey : function(){
+        this.validateUser();
+        var key = this.get('provider') + '_' + this.get('id');
+        return key;
+    },
+
+    validateUser : function(){
         if( !this.get('provider') || !this.get('id') ){
             throw "Can't get key of a non logged user";
         }
-
-        var key = this.get('provider') + '_' + this.get('id');
-        return key;
     },
     
     getShortName : function(){
@@ -1626,7 +1657,7 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         ];
 
         var chartContainer = this.$('svg')[0];
-        var svg = d3.select(chartContainer).attr("width",700).attr("height",300);
+        var svg = d3.select(chartContainer).attr("width",400).attr("height",300);
         var chartNode = this.$('svg g')[0];
 
         Donut3D.draw(chartNode, randomData(), 150, 150, 130, 100, 40, 0.4);
@@ -1703,12 +1734,15 @@ $w.views.Header = $w.views.Abstract.extend({
     
     getViewData : function(){
         var name = '';
+        var profileImageUrl = '';
         if( $w.Application.user() ){
             name = $w.Application.user().get('displayName');
+            profileImageUrl = $w.Application.user().getProfilePicture();
         }
         
         var data = {
-            name : name
+            name : name,
+            profileImageUrl : profileImageUrl
         };
         return data;
     }

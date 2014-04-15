@@ -6,7 +6,9 @@ $w.models.User = $w.models.Abstract.extend({
         email : '',  
         password : '',  
         first_name : '',  
-        last_name : ''  
+        last_name : '',
+        profile_picture_url : null,
+        provider : null
     },
     
     validations :{
@@ -18,13 +20,42 @@ $w.models.User = $w.models.Abstract.extend({
         }  
     },
 
+    getProfilePicture : function(){
+        if( !this.get('provider') ){
+            return null;
+        }
+
+        var url = '';
+
+        switch(this.get('provider')){
+            case 'facebook':
+                url = 'http://graph.facebook.com/' + this.get('username') +'/picture';
+                break;
+            case 'google':
+                url = this.get('thirdPartyUserData').picture;
+                break;
+            case 'twitter':
+                url = this.get('profile_image_url');
+                break;
+            case 'github':
+                url = this.get('avatar_url');
+                break;
+            default:
+                throw 'Unknown provider for the user: ' + this.get('provider');
+        }
+        return url;
+    },
+
     getKey : function(){
+        this.validateUser();
+        var key = this.get('provider') + '_' + this.get('id');
+        return key;
+    },
+
+    validateUser : function(){
         if( !this.get('provider') || !this.get('id') ){
             throw "Can't get key of a non logged user";
         }
-
-        var key = this.get('provider') + '_' + this.get('id');
-        return key;
     },
     
     getShortName : function(){
