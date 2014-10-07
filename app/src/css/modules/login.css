@@ -15,6 +15,9 @@
 #login-form .options a{
     text-decoration: none;
 }
+#login-form .helper{
+    color: #888888;
+}
 #logout-box{
     margin-top: 50px;
 }

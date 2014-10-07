@@ -5,6 +5,14 @@ $w.models.Abstract = Backbone.Model.extend({
     initialize : function(){
         $w.util.bindAll(this);
     },
+
+    isDefault : function(key){
+        if( !this.defaults ){
+            return false;
+        }
+
+        return this.defaults[key] == this.get(key);
+    },
     
     urlRoot : function(){
         return $w.global.apiUrl + this.serviceUrl;  

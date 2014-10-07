@@ -1,3 +1,6 @@
+#layout{
+    min-width: 800px;
+}
 #initializing .text{
     margin: 100px 0 0 0;
     color: #6a94b0;
@@ -18,7 +21,12 @@
     display: inline-block;
     vertical-align: top;
 }
-#user-bar > *{
+#user-bar > img{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 10px 0 0;
+}
+#user-bar > span, #user-bar > a{
     display: inline-block;
     color: #A6823B;
     margin: 0 0 10px 0;

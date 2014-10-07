@@ -1,4 +1,4 @@
-$w.models.charts.RemoteChart = Backbone.Firebase.Model.extend($w.models.charts.Chart);
+$w.models.charts.RemoteChart = $w.models.charts.Chart.extend(Backbone.Firebase.Model.prototype);
 $w.models.charts.RemoteChart = $w.models.charts.RemoteChart.extend({
 
     firebase : function(){

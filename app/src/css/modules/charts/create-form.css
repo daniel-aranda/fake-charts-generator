@@ -1,0 +1,19 @@
+.create-form .details{
+    display: inline-block;
+    width: 250px;
+    border-right: 2px dashed #cccccc;
+    height: 500px;
+    margin: 0 30px 0 0;
+}
+
+.create-form input[type="text"]{
+    width: 200px;
+}
+.create-form .form > div{
+    margin: 0 0 20px 0;
+}
+
+.create-form .chart-container{
+    display: inline-block;
+    vertical-align: top;
+}

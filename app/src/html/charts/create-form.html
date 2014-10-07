@@ -1,13 +1,12 @@
-<div class="content-box">
     <h2>Chart Properties</h2>
-    <div>
-        <div class="ui-control textfield" type="text" name="name" label="name:"></div>
+    <div class="details form">
+        <div>
+            <div class="ui-control textfield" type="text" name="name" label="name:"></div>
+        </div>
+        <div>
+            <label>type:</label>
+            <div class="ui-control radiobutton" name="chart_type" label="3d Donut" value="donut"></div>
+            <div class="ui-control radiobutton" name="chart_type" label="linear" value="linear"></div>
+        </div>
     </div>
-    <div>
-        <div class="ui-control radiobutton" name="chart_type" label="3d Donut" value="donut"></div>
-        <div class="ui-control radiobutton" name="chart_type" label="linear" value="linear"></div>
-    </div>
-    <div>
-        <button class="btn-create">create</button>
-    </div>
-</div>
+    <div class="chart-container"></div>
