@@ -399,6 +399,7 @@ $w.views.Abstract = Backbone.View.extend({
 });
 $w.views.charts.Abstract = $w.views.Abstract.extend({
 
+    template : 'charts_empty',
     active: true,
 
     events : function(events){
@@ -1689,6 +1690,7 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
     removeExistingChart : function(){
         if( this.chart ){
             this.chart.remove();
+            this.$('.chart-container').empty();
         }
     },
 
@@ -1699,8 +1701,8 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
             case 'donut':
                 this.chart = new $w.views.charts.Donut({model : this.model});
                 break;
-            case 'linear':
-                console.log('linear');
+            case 'multi-bar':
+                this.chart = new $w.views.charts.MultiBar({model : this.model});
                 break;
             default:
                 throw 'Invalid chart type: ' + chartType;
@@ -1791,7 +1793,37 @@ $w.views.charts.Editor = $w.views.Abstract.extend({
     }
 
 });
+$w.views.charts.MultiBar = $w.views.charts.Abstract.extend({
 
+    active: true,
+    chartNode: null,
+
+    afterRender : function(){
+        this._super();
+
+        var graph = new Rickshaw.Graph({
+            element: this.$el[0],
+            renderer: 'bar',
+            stack: false,
+            series: [{
+                data: [ { x: 0, y: 40 }, { x: 1, y: 49 }],
+                color: 'steelblue'
+            }, {
+                data: [ { x: 0, y: 20 }, { x: 1, y: 24 }],
+                color: 'lightblue'
+            }]
+        });
+
+        graph.render();
+    },
+
+    changeDate : function(){
+    },
+
+    randomData: function(){
+    }
+
+});
 $w.views.Footer = $w.views.Abstract.extend({
 
     events : {

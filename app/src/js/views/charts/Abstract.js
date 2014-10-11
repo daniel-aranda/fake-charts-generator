@@ -1,5 +1,6 @@
 $w.views.charts.Abstract = $w.views.Abstract.extend({
 
+    template : 'charts_empty',
     active: true,
 
     events : function(events){
