@@ -1,3 +1,7 @@
+.create-form{
+    min-width: 1000px;
+}
+
 .create-form .details{
     display: inline-block;
     width: 250px;
@@ -16,4 +20,9 @@
 .create-form .chart-container{
     display: inline-block;
     vertical-align: top;
+    min-width: 600px;
+}
+
+.create-form .ui-control.radiobutton{
+    margin: 10px 0;
 }

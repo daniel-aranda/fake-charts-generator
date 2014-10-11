@@ -37,10 +37,17 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
             return null;
         }
 
+        this.removeExistingChart();
         this.buildChart();
 
         this.$('.chart-container').append(this.chart.el);
         this.chart.render();
+    },
+
+    removeExistingChart : function(){
+        if( this.chart ){
+            this.chart.remove();
+        }
     },
 
     buildChart : function(){
@@ -49,6 +56,9 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
         switch(chartType){
             case 'donut':
                 this.chart = new $w.views.charts.Donut({model : this.model});
+                break;
+            case 'linear':
+                console.log('linear');
                 break;
             default:
                 throw 'Invalid chart type: ' + chartType;

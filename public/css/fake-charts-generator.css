@@ -240,6 +240,10 @@ h3{
 #footer a{
     color: #6a94b0;
 }
+.create-form{
+    min-width: 1000px;
+}
+
 .create-form .details{
     display: inline-block;
     width: 250px;
@@ -258,6 +262,11 @@ h3{
 .create-form .chart-container{
     display: inline-block;
     vertical-align: top;
+    min-width: 600px;
+}
+
+.create-form .ui-control.radiobutton{
+    margin: 10px 0;
 }
 .donut_3d path.slice{
     stroke-width:2px;
