@@ -397,6 +397,41 @@ $w.views.Abstract = Backbone.View.extend({
         }
           
 });
+$w.views.charts.Abstract = $w.views.Abstract.extend({
+
+    active: true,
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    remove : function(){
+        this._super();
+        this.active = false;
+    },
+
+    looper : function(){
+        setTimeout(this.looperStep, 3000);
+    },
+
+    looperStep : function(){
+        if( this.active ){
+            this.changeDate();
+            this.looper();
+        }
+    },
+
+    changeDate : function(){
+        throw new Error('You should overwrite this.');
+    },
+
+    randomData: function(){
+        throw new Error('You should overwrite this.');
+    }
+
+});
 $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     
     template : 'form_formelement',
@@ -1677,7 +1712,7 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
     }
 
 });
-$w.views.charts.Donut = $w.controls.UIForm.extend({
+$w.views.charts.Donut = $w.views.charts.Abstract.extend({
 
     template : 'charts_donut',
     active: true,
@@ -1688,13 +1723,6 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         var this_events = {
         };
         return this._super(_.extend(this_events, events));
-    },
-
-    afterInitialize : function(){
-    },
-
-    removeHandler : function(){
-        this.active = false;
     },
 
     afterRender : function(){
@@ -1713,15 +1741,8 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
 
         Donut3D.draw(this.chartNode, this.randomData(), 300, 230, 230, 200, 50, 0.4);
 
-        setTimeout(this.looper, 3000);
+        this.looper();
 
-    },
-
-    looper : function(){
-        if( this.active ){
-            this.changeDate();
-            setTimeout(this.looper, 3000);
-        }
     },
 
     changeDate : function(){
@@ -1776,6 +1797,7 @@ $w.views.charts.Editor = $w.views.Abstract.extend({
     }
 
 });
+
 $w.views.Footer = $w.views.Abstract.extend({
 
     events : {

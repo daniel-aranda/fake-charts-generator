@@ -31,6 +31,7 @@ module.exports = function(grunt){
                     'app/src/js/core/**/*.js',
                     'app/src/js/models/Abstract.js',
                     'app/src/js/views/Abstract.js',
+                    'app/src/js/views/charts/Abstract.js',
                     'app/src/js/controls/form/ComponentAbstract.js',
                     'app/src/js/controls/**/*.js',
                     'app/src/js/app/**/*.js',

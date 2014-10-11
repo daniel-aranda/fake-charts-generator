@@ -1,4 +1,4 @@
-$w.views.charts.Donut = $w.controls.UIForm.extend({
+$w.views.charts.Donut = $w.views.charts.Abstract.extend({
 
     template : 'charts_donut',
     active: true,
@@ -9,13 +9,6 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         var this_events = {
         };
         return this._super(_.extend(this_events, events));
-    },
-
-    afterInitialize : function(){
-    },
-
-    removeHandler : function(){
-        this.active = false;
     },
 
     afterRender : function(){
@@ -34,15 +27,8 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
 
         Donut3D.draw(this.chartNode, this.randomData(), 300, 230, 230, 200, 50, 0.4);
 
-        setTimeout(this.looper, 3000);
+        this.looper();
 
-    },
-
-    looper : function(){
-        if( this.active ){
-            this.changeDate();
-            setTimeout(this.looper, 3000);
-        }
     },
 
     changeDate : function(){
