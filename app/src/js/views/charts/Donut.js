@@ -29,10 +29,10 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         ];
 
         var chartContainer = this.$('svg')[0];
-        var svg = d3.select(chartContainer).attr("width",400).attr("height",300);
+        var svg = d3.select(chartContainer).attr("width",700).attr("height",500);
         this.chartNode = this.$('svg g')[0];
 
-        Donut3D.draw(this.chartNode, this.randomData(), 150, 150, 130, 100, 40, 0.4);
+        Donut3D.draw(this.chartNode, this.randomData(), 300, 230, 230, 200, 50, 0.4);
 
         setTimeout(this.looper, 3000);
 
@@ -46,7 +46,7 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
     },
 
     changeDate : function(){
-        Donut3D.transition(this.chartNode, this.randomData(), 130, 100, 30, 0.4);
+        Donut3D.transition(this.chartNode, this.randomData(), 230, 200, 50, 0.4);
     },
 
     randomData: function(){
