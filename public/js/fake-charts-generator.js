@@ -1719,12 +1719,6 @@ $w.views.charts.Donut = $w.views.charts.Abstract.extend({
     salesData: null,
     chartNode: null,
 
-    events : function(events){
-        var this_events = {
-        };
-        return this._super(_.extend(this_events, events));
-    },
-
     afterRender : function(){
         this._super();
         this.salesData=[
