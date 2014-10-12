@@ -24,6 +24,7 @@ Rickshaw.Graph.Renderer.MultiBarLabeled = Rickshaw.Class.create( Rickshaw.Graph.
 
         var seriesLength = this.graph.series.active().length;
 
+        this.xSkins = {};
         for(var i=0; i<seriesLength; i++){
             this.itemRenderer(i);
         }

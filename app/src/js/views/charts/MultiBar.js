@@ -6,35 +6,40 @@ $w.views.charts.MultiBar = $w.views.charts.Abstract.extend({
     afterRender : function(){
         this._super();
 
-        var graph = new Rickshaw.Graph({
+        this.chart = new Rickshaw.Graph({
             element: this.$el[0],
             renderer: Rickshaw.Graph.Renderer.MultiBarLabeled,
             unstack: true,
             height: 400,
             series: [{
                 name: 'daniel',
-                data: [ { x: 0, y: 40 }, { x: 1, y: 49 }],
+                data: this.randomData(),
                 color: 'steelblue'
             }, {
-                name: 'rocks',
-                data: [ { x: 0, y: 20 }, { x: 1, y: 24 }],
+                name: 'was here',
+                data: this.randomData(),
                 color: 'lightblue'
             }],
             padding: {top: 0.4}
         });
 
-        graph.groups = [
+        this.chart.groups = [
             'ROI',
             'REV'
         ];
 
-        graph.render();
+        this.chart.render();
+        this.looper();
     },
 
-    changeDate : function(){
+    changeData : function(){
+        this.chart.series[0].data = this.randomData();
+        this.chart.series[1].data = this.randomData();
+        this.chart.update();
     },
 
     randomData: function(){
+        return [{ x: 0, y: Math.round(Math.random() * 20)}, { x: 1, y: Math.round(Math.random() * 20) }];
     }
 
 });

@@ -20,12 +20,12 @@ $w.views.charts.Abstract = $w.views.Abstract.extend({
 
     looperStep : function(){
         if( this.active ){
-            this.changeDate();
+            this.changeData();
             this.looper();
         }
     },
 
-    changeDate : function(){
+    changeData : function(){
         throw new Error('You should overwrite this.');
     },
 

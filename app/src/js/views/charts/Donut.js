@@ -25,7 +25,7 @@ $w.views.charts.Donut = $w.views.charts.Abstract.extend({
 
     },
 
-    changeDate : function(){
+    changeData : function(){
         Donut3D.transition(this.chartNode, this.randomData(), 230, 200, 50, 0.4);
     },
 
