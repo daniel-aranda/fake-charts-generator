@@ -62,6 +62,9 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
             case 'multi-bar':
                 this.chart = new $w.views.charts.MultiBar({model : this.model});
                 break;
+            case 'area':
+                this.chart = new $w.views.charts.Area({model : this.model});
+                break;
             default:
                 throw 'Invalid chart type: ' + chartType;
         }
