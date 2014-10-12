@@ -1,0 +1,20 @@
+.chart-component.area{
+    position: relative;
+}
+.chart-component.area .chart, .chart-component.area .x-axis{
+    position: relative;
+    left: 40px;
+}
+.chart-component.area .x-axis{
+    width: 700px;
+}
+.chart-component.area .y-axis{
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 40px;
+}
+
+.chart-component.area h3{
+    text-align: center;
+}
