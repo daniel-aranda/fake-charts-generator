@@ -12,6 +12,7 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
     afterInitialize : function(){
         this.model.on('change:user_id', this.render);
+        this.model.on('change:chart_type', this.render);
     },
 
     afterRender : function(){
