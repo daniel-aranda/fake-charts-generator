@@ -1,17 +1,24 @@
+<script type="text/x-FCK-tpl" class="tpl charts_area">
+<h3>Quarter sales</h3>
+<div class="y-axis"></div>
+<div class="chart"></div>
+<div class="x-axis"></div>
+</script>
+
 <script type="text/x-FCK-tpl" class="tpl charts_create-form">
-<div class="content-box">
     <h2>Chart Properties</h2>
-    <div>
-        <div class="ui-control textfield" type="text" name="name" label="name:"></div>
+    <div class="details form">
+        <div>
+            <div class="ui-control textfield" type="text" name="name" label="name:"></div>
+        </div>
+        <div>
+            <label>type:</label>
+            <div class="ui-control radiobutton" name="chart_type" label="3d Donut" value="donut"></div>
+            <div class="ui-control radiobutton" name="chart_type" label="Multi Bar" value="multi-bar"></div>
+            <div class="ui-control radiobutton" name="chart_type" label="Area" value="area"></div>
+        </div>
     </div>
-    <div>
-        <div class="ui-control radiobutton" name="chart_type" label="3d Donut" value="donut"></div>
-        <div class="ui-control radiobutton" name="chart_type" label="linear" value="linear"></div>
-    </div>
-    <div>
-        <button class="btn-create">create</button>
-    </div>
-</div></script>
+    <div class="chart-container"></div></script>
 
 <script type="text/x-FCK-tpl" class="tpl charts_donut">
     <svg>
@@ -25,6 +32,9 @@
     <div class="chart-container">
     </div>
 </div></script>
+
+<script type="text/x-FCK-tpl" class="tpl charts_empty">
+</script>
 
 <script type="text/x-FCK-tpl" class="tpl commons_footer">
 <div id="footer">
@@ -40,6 +50,7 @@
         </a>
     </div>
     <div id="user-bar">
+        <img src="<%= obj.profileImageUrl%>" />
         <span>
             <%= obj.name %>
         </span><a href="#logout">logout</a>
@@ -114,7 +125,7 @@
             You need to login in order to continue
         </h3>
         <hr />
-        <p>
+        <p class="helper">
             Login with:
         </p>
         <div class="options">

@@ -302,6 +302,14 @@ $w.models.Abstract = Backbone.Model.extend({
     initialize : function(){
         $w.util.bindAll(this);
     },
+
+    isDefault : function(key){
+        if( !this.defaults ){
+            return false;
+        }
+
+        return this.defaults[key] == this.get(key);
+    },
     
     urlRoot : function(){
         return $w.global.apiUrl + this.serviceUrl;  
@@ -388,6 +396,407 @@ $w.views.Abstract = Backbone.View.extend({
         afterRender : function(){
         }
           
+});
+$w.views.charts.Abstract = $w.views.Abstract.extend({
+
+    template : 'charts_empty',
+    active: true,
+
+    events : function(events){
+        var this_events = {
+        };
+        return this._super(_.extend(this_events, events));
+    },
+
+    remove : function(){
+        this._super();
+        this.active = false;
+    },
+
+    looper : function(){
+        setTimeout(this.looperStep, 3000);
+    },
+
+    looperStep : function(){
+        if( this.active ){
+            this.changeData();
+            this.looper();
+        }
+    },
+
+    changeData : function(){
+        throw new Error('You should overwrite this.');
+    },
+
+    randomData: function(){
+        throw new Error('You should overwrite this.');
+    }
+
+});
+Rickshaw.namespace('Rickshaw.Graph.Renderer.AnimatedArea');
+
+Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Renderer.Area, {
+
+    name: 'animated_area',
+
+    _rendered : false,
+    animate : true,
+
+    defaults: function($super) {
+
+        return Rickshaw.extend( $super(), {
+            unstack: false,
+            fill: false,
+            stroke: false,
+            animate : false
+        } );
+    },
+
+    createDOMElements : function(args){
+        var graph = this.graph;
+        var series = args.series || graph.series;
+
+        var vis = args.vis || graph.vis;
+        vis.selectAll('*').remove();
+
+        // insert or stacked areas so strokes lay on top of areas
+        var method = this.unstack ? 'append' : 'insert';
+
+        var data = series
+            .filter(function(s) { return !s.disabled; })
+            .map(function(s) { return s.stack; });
+
+        var nodes = vis.selectAll("path")
+            .data(data)
+            .enter()[method]("svg:g", 'g');
+
+        nodes.append("svg:path")
+            .attr("class", 'area')
+            .attr("d", this.seriesPathFactory());
+
+        if (this.stroke) {
+            nodes.append("svg:path")
+                .attr("d", this.seriesStrokeFactory())
+                .attr("class", 'line');
+        }
+
+        vis.append("svg:g")
+            .attr("class", 'item-renderer');
+
+        var i = 0;
+        series.forEach( function(series) {
+            if (series.disabled) return;
+            series.path = nodes[0][i++];
+            this._styleSeries(series);
+        }, this );
+
+        this._rendered = true;
+    },
+
+    itemRenderer: function(serieIndex) {
+
+        var graph = this.graph;
+
+        var serie = graph.series[serieIndex];
+        var d = serie.data;
+        var dotSize = 5;
+        var renderSerie = d3.select(this.graph.element).selectAll('.item-renderer');
+
+        var dataFilter = d.filter( function(d) { return d.campaigns; } );
+
+        var icon = '/assets/images/icons/realtime_dashboard/';
+
+        if( !serie.campaignIcon ){
+            return null;
+        }
+        icon += serie.campaignIcon;
+
+        _.each(dataFilter, function(item, index){
+            var x = graph.x(item.x);
+            var y = graph.y(item.y);
+            var width = 22;
+            var height = 20;
+
+            var img_x = x - width * 0.5;
+            var img_y = y - (height + 12);
+
+            var circle = renderSerie
+                .append("svg:circle")
+                .style('pointer-events', 'all')
+                .attr("cx", x)
+                .attr("cy", y)
+                .attr("r", 5)
+                .attr("fill", 'white')
+                .attr("stroke", serie.color)
+                .attr("stroke-width", '3')
+                .attr("class", 'campaign');
+            if( graph.animateCampaigns ){
+                circle.
+                    style('opacity', 0)
+                    .transition()
+                    .delay(300 + index * 600)
+                    .duration(1000)
+                    .style('opacity', 1);
+            }
+
+
+            if( graph.campaignIconEnabled ){
+                 item = renderSerie
+                    .append("svg:image")
+                    .style('pointer-events', 'all')
+                    .attr("xlink:href", icon)
+                    .attr("width", width)
+                    .attr("height", height)
+                    .attr("class", 'campaign');
+                if( graph.animateCampaigns ){
+                    item
+                        .attr("x", img_x)
+                        .attr("y", 0)
+                        .attr("opacity", 0)
+                        .transition()
+                        .delay(300 + index * 600)
+                        .duration(1000)
+                        .attr("opacity", 1)
+                        .attr("y", img_y);
+                }else{
+                    item
+                        .attr("x", img_x)
+                        .attr("opacity", 1)
+                        .attr("y", img_y);
+                }
+            }
+
+        }, this);
+
+    },
+
+    render: function(args) {
+
+        args = args || {};
+        var vis = args.vis || this.graph.vis;
+
+        if( !this._rendered ){
+            this.createDOMElements(args);
+        }else{
+            vis.selectAll('.x_ticks_d3').remove();
+            vis.selectAll('.x_grid_d3').remove();
+            vis.selectAll('.y_ticks').remove();
+            vis.selectAll('.y_grid').remove();
+            vis.selectAll('.y_grid').remove();
+        }
+
+        var data = this.graph.series
+            .filter(function(s) { return !s.disabled; })
+            .map(function(s) { return s.stack; });
+
+        var areas = vis.selectAll("path.area")
+            .data(data);
+
+        if( this.animate ){
+            areas = areas
+                .transition()
+                .duration(750);
+        }
+
+        areas.attr("d", this.seriesPathFactory());
+
+        if (this.stroke) {
+            var lines = vis.selectAll("path.line")
+                .data(data);
+
+            if( this.animate ){
+                lines = lines
+                    .transition()
+                    .duration(750);
+            }
+            lines.attr("d", this.seriesStrokeFactory());
+        }
+
+        var seriesLength = this.graph.series.length;
+        var itemRendererContainer = d3.select(this.graph.element).selectAll('.item-renderer');
+        itemRendererContainer.selectAll('*').remove();
+
+        for(var i=0; i<seriesLength; i++){
+            this.itemRenderer(i);
+        }
+
+    },
+
+    _styleSeries: function(series) {
+
+        var result = Rickshaw.Graph.Renderer.Area.prototype._styleSeries.call(this, series);
+
+        if( series.dotted ){
+            d3.select(series.path).select('.line').style("stroke-dasharray", (series.dotted));
+        }
+        if( series.opacity ){
+            d3.select(series.path).select('.area').style("opacity", series.opacity);
+        }
+
+        return result;
+
+    }
+
+} );
+Rickshaw.namespace('Rickshaw.Graph.Renderer.MultiBarLabeled');
+
+Rickshaw.Graph.Renderer.MultiBarLabeled = Rickshaw.Class.create( Rickshaw.Graph.Renderer.Bar, {
+
+    name : 'multi-bar-labeled',
+
+    render : function(args){
+
+        if( this.unstack !== true ){
+            throw new Error('Multi Bar does not support stacked Bars');
+        }
+
+        args = args || {};
+        var graph = this.graph;
+
+        var result = this.customRenderer(args);
+
+        var vis = args.vis || graph.vis;
+
+        vis.insert("svg:g", ':first-child')
+            .attr("class", 'skin-background');
+        vis.append("svg:g")
+            .attr("class", 'item-renderer');
+
+        var seriesLength = this.graph.series.active().length;
+
+        this.xSkins = {};
+        for(var i=0; i<seriesLength; i++){
+            this.itemRenderer(i);
+        }
+
+        return result;
+    },
+
+    customRenderer : function(args){
+        args = args || {};
+
+        var graph = this.graph;
+        var series = args.series || graph.series;
+
+        var vis = args.vis || graph.vis;
+        vis.selectAll('*').remove();
+
+        var barWidth = this.barWidth(series.active()[0]);
+        var barXOffset = 0;
+
+        var activeSeriesCount = series.filter( function(s) { return !s.disabled; } ).length;
+        var seriesBarWidth = this.unstack ? barWidth / activeSeriesCount : barWidth;
+
+        var transform = function(d) {
+            // add a matrix transform for negative values
+            var matrix = [ 1, 0, 0, (d.y < 0 ? -1 : 1), 0, (d.y < 0 ? graph.y.magnitude(Math.abs(d.y)) * 2 : 0) ];
+            return "matrix(" + matrix.join(',') + ")";
+        };
+
+        series.forEach( function(series) {
+
+            if (series.disabled) return;
+
+            var barWidth = this.barWidth(series);
+
+            var nodes = vis.selectAll("path")
+                .data(series.stack.filter( function(d) { return d.y !== null; } ))
+                .enter().append("svg:rect")
+                .attr("rx", 3)
+                .attr("ry", 3)
+                .attr("x", function(d) { return graph.x(d.x) + barXOffset + 3; })
+                .attr("y", function(d) { return -30 + (graph.y(d.y0 + Math.abs(d.y))) * (d.y < 0 ? -1 : 1 ); })
+                .attr("width", seriesBarWidth - 6)
+                .attr("height", _.bind(this.calculateHeight, this))
+                .attr("transform", transform);
+
+            Array.prototype.forEach.call(nodes[0], function(n) {
+                n.setAttribute('fill', series.color);
+            } );
+
+            if (this.unstack) barXOffset += seriesBarWidth;
+
+        }, this );
+    },
+
+    calculateHeight : function(d){
+        var graph = this.graph;
+        var height = graph.y.magnitude(Math.abs(d.y));
+        height += 30;
+
+        return height;
+    },
+
+    itemRenderer : function(serieIndex){
+        var graph = this.graph;
+        var series = graph.series.active();
+        var serie = series[serieIndex];
+        var d = serie.data;
+        var renderSerie = d3.select(graph.element).selectAll('.item-renderer');
+        var skinBackground = d3.select(graph.element).selectAll('.skin-background');
+        var barWidth = this.barWidth(serie);
+        var seriesBarWidth = barWidth / series.length;
+        this.xSkins = this.xSkins || {};
+
+        skinBackground.append('svg:line')
+            .attr("x1", 0)
+            .attr("x2", 0)
+            .attr("y1", 0)
+            .attr("y2", graph.height)
+            .attr('stroke', '#b1b1b1')
+            .style('stroke-width', 1)
+            .style("stroke-dasharray", ("3, 3"));
+
+        _.each(d, function(item, index){
+            var x = graph.x(item.x);
+            var y = graph.y(item.y);
+
+            if( !graph.hideSerieName ){
+                renderSerie.append("text")
+                    .attr("x", x + seriesBarWidth * serieIndex + seriesBarWidth / 2)
+                    .attr("y", graph.height - 10)
+                    .attr("font-size", "20px")
+                    .style("width", seriesBarWidth)
+                    .style("fill", "white")
+                    .style("text-anchor", "middle")
+                    .text(serie.name);
+            }
+
+            renderSerie.append("text")
+                .attr("x", x + seriesBarWidth * serieIndex + seriesBarWidth / 2)
+                .attr("y", y - 35)
+                .attr("font-size", "16px")
+                .style("width", seriesBarWidth)
+                .style("fill", serie.color)
+                .style("font-weight", "bold")
+                .style("text-anchor", "middle")
+                .text(item.y);
+
+            if( !this.xSkins['skin_' + index] ){
+                this.xSkins['skin_' + index] = true;
+                skinBackground.append('svg:line')
+                    .attr("x1", x + barWidth + 5)
+                    .attr("x2", x + barWidth + 5)
+                    .attr("y1", 0)
+                    .attr("y2", graph.height)
+                    .attr('stroke', '#b1b1b1')
+                    .style('stroke-width', 1)
+                    .style("stroke-dasharray", ("3, 3"));
+
+                skinBackground.append("text")
+                    .attr("x", x + barWidth / 2)
+                    .attr("y", 20)
+                    .attr("font-size", "16px")
+                    .style("width", barWidth)
+                    .style("fill", '#3c3c3c')
+                    .style("text-anchor", "middle")
+                    .text(graph.groups[index]);
+            }
+
+        }, this);
+
+    }
+
 });
 $w.controls.ComponentAbstract = $w.views.Abstract.extend({
     
@@ -1193,7 +1602,9 @@ $w.models.User = $w.models.Abstract.extend({
         email : '',  
         password : '',  
         first_name : '',  
-        last_name : ''  
+        last_name : '',
+        profile_picture_url : null,
+        provider : null
     },
     
     validations :{
@@ -1205,13 +1616,42 @@ $w.models.User = $w.models.Abstract.extend({
         }  
     },
 
+    getProfilePicture : function(){
+        if( !this.get('provider') ){
+            return null;
+        }
+
+        var url = '';
+
+        switch(this.get('provider')){
+            case 'facebook':
+                url = 'http://graph.facebook.com/' + this.get('username') +'/picture';
+                break;
+            case 'google':
+                url = this.get('thirdPartyUserData').picture;
+                break;
+            case 'twitter':
+                url = this.get('profile_image_url');
+                break;
+            case 'github':
+                url = this.get('avatar_url');
+                break;
+            default:
+                throw 'Unknown provider for the user: ' + this.get('provider');
+        }
+        return url;
+    },
+
     getKey : function(){
+        this.validateUser();
+        var key = this.get('provider') + '_' + this.get('id');
+        return key;
+    },
+
+    validateUser : function(){
         if( !this.get('provider') || !this.get('id') ){
             throw "Can't get key of a non logged user";
         }
-
-        var key = this.get('provider') + '_' + this.get('id');
-        return key;
     },
     
     getShortName : function(){
@@ -1231,7 +1671,7 @@ $w.models.User = $w.models.Abstract.extend({
 $w.models.charts.Chart = $w.models.Abstract.extend({
 
     defaults : {
-        title : 'untitled'
+        name : 'untitled'
     },
 
     validations :{
@@ -1241,7 +1681,7 @@ $w.models.charts.Chart = $w.models.Abstract.extend({
     }
 
 });
-$w.models.charts.RemoteChart = Backbone.Firebase.Model.extend($w.models.charts.Chart);
+$w.models.charts.RemoteChart = $w.models.charts.Chart.extend(Backbone.Firebase.Model.prototype);
 $w.models.charts.RemoteChart = $w.models.charts.RemoteChart.extend({
 
     firebase : function(){
@@ -1566,8 +2006,80 @@ $w.views.Start = $w.views.Abstract.extend({
     }
  
 });
+$w.views.charts.Area = $w.views.charts.Abstract.extend({
+
+    active: true,
+    chartNode: null,
+    template: 'charts_area',
+    className: 'chart-component area',
+
+    afterRender : function(){
+        this._super();
+
+        this.chart = new Rickshaw.Graph( {
+            element: this.$('.chart')[0],
+            width: 600,
+            height: 400,
+            renderer: Rickshaw.Graph.Renderer.AnimatedArea,
+            stroke: true,
+            series: [{
+                data: this.randomData(),
+                color: '#cae2f7'
+            }],
+            padding: {top: 0.2}
+        } );
+        this.addXAxis();
+        this.addYAxis();
+        this.chart.render();
+        this.looper();
+    },
+
+    changeData : function(){
+        this.chart.series[0].data = this.randomData();
+        this.chart.update();
+    },
+
+    randomData: function(){
+        return [
+            { x: 0, y: Math.round(Math.random() * 50)},
+            { x: 1, y: Math.round(Math.random() * 50)},
+            { x: 2, y: Math.round(Math.random() * 50)},
+            { x: 3, y: Math.round(Math.random() * 50) },
+            { x: 4, y: Math.round(Math.random() * 50) },
+            { x: 5, y: Math.round(Math.random() * 50) },
+            { x: 6, y: Math.round(Math.random() * 50) },
+            { x: 7, y: Math.round(Math.random() * 50) },
+            { x: 8, y: Math.round(Math.random() * 50) }
+        ];
+    },
+
+    addXAxis : function(){
+        this.xAxis = new Rickshaw.Graph.Axis.X({
+            graph : this.chart,
+            orientation: 'bottom',
+            element: this.$('.x-axis')[0],
+            tickValues : [0, 2, 4, 6, 8]
+        });
+
+        this.xAxis.render();
+    },
+
+    addYAxis : function(){
+        this.yAxis = new Rickshaw.Graph.Axis.Y({
+            graph : this.chart,
+            tickFormat : d3.format("$"),
+            orientation: 'left',
+            element: this.$('.y-axis')[0]
+        });
+
+        this.yAxis.render();
+
+    }
+
+});
 $w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
+    className : 'content-box create-form',
     template : 'charts_create-form',
 
     events : function(events){
@@ -1579,21 +2091,62 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
 
     afterInitialize : function(){
         this.model.on('change:user_id', this.render);
-        this.model.on('change:ready', this.render);
+        this.model.on('change:chart_type', this.render);
     },
 
     afterRender : function(){
         this._super();
+
         if( !this.model.get('user_id') ){
             this.$el.hide();
             return false;
         }
-        if( this.model.get('ready') ){
-            $w.global.router.go('editor/' + this.model.get('id'));
-            return false;
-        }
+
         this.$el.fadeIn();
+
         this.controls.name.$control.focus();
+
+        this.invalidateChart();
+
+    },
+
+    invalidateChart : function(){
+        if( !this.model.get('chart_type') ){
+            this.$('.chart-container').html('');
+            this.chart = null;
+            return null;
+        }
+
+        this.removeExistingChart();
+        this.buildChart();
+
+        this.$('.chart-container').append(this.chart.el);
+        this.chart.render();
+    },
+
+    removeExistingChart : function(){
+        if( this.chart ){
+            this.chart.remove();
+            this.$('.chart-container').empty();
+        }
+    },
+
+    buildChart : function(){
+
+        var chartType = this.model.get('chart_type');
+        switch(chartType){
+            case 'donut':
+                this.chart = new $w.views.charts.Donut({model : this.model});
+                break;
+            case 'multi-bar':
+                this.chart = new $w.views.charts.MultiBar({model : this.model});
+                break;
+            case 'area':
+                this.chart = new $w.views.charts.Area({model : this.model});
+                break;
+            default:
+                throw 'Invalid chart type: ' + chartType;
+        }
     },
 
     createClickHandler : function(){
@@ -1601,23 +2154,16 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
     }
 
 });
-$w.views.charts.Donut = $w.controls.UIForm.extend({
+$w.views.charts.Donut = $w.views.charts.Abstract.extend({
 
     template : 'charts_donut',
-
-    events : function(events){
-        var this_events = {
-        };
-        return this._super(_.extend(this_events, events));
-    },
-
-    afterInitialize : function(){
-        this.model.on('change:ready', this.render);
-    },
+    active: true,
+    salesData: null,
+    chartNode: null,
 
     afterRender : function(){
         this._super();
-        var salesData=[
+        this.salesData=[
             {label:"Basic", color:"#3366CC"},
             {label:"Plus", color:"#DC3912"},
             {label:"Lite", color:"#FF9900"},
@@ -1626,22 +2172,23 @@ $w.views.charts.Donut = $w.controls.UIForm.extend({
         ];
 
         var chartContainer = this.$('svg')[0];
-        var svg = d3.select(chartContainer).attr("width",700).attr("height",300);
-        var chartNode = this.$('svg g')[0];
+        var svg = d3.select(chartContainer).attr("width",700).attr("height",500);
+        this.chartNode = this.$('svg g')[0];
 
-        Donut3D.draw(chartNode, randomData(), 150, 150, 130, 100, 40, 0.4);
+        Donut3D.draw(this.chartNode, this.randomData(), 300, 230, 230, 200, 50, 0.4);
 
-        function changeData(){
-            Donut3D.transition(chartNode, randomData(), 130, 100, 30, 0.4);
-        }
+        this.looper();
 
-        setInterval(changeData, 3000);
+    },
 
-        function randomData(){
-            return salesData.map(function(d){
-                return {label:d.label, value:1000*Math.random(), color:d.color};});
-        }
+    changeData : function(){
+        Donut3D.transition(this.chartNode, this.randomData(), 230, 200, 50, 0.4);
+    },
 
+    randomData: function(){
+        return this.salesData.map(function(d){
+                return {label:d.label, value:1000*Math.random(), color:d.color};
+        });
     }
 
 });
@@ -1686,6 +2233,51 @@ $w.views.charts.Editor = $w.views.Abstract.extend({
     }
 
 });
+$w.views.charts.MultiBar = $w.views.charts.Abstract.extend({
+
+    active: true,
+    chartNode: null,
+
+    afterRender : function(){
+        this._super();
+
+        this.chart = new Rickshaw.Graph({
+            element: this.$el[0],
+            renderer: Rickshaw.Graph.Renderer.MultiBarLabeled,
+            unstack: true,
+            height: 400,
+            series: [{
+                name: 'daniel',
+                data: this.randomData(),
+                color: 'steelblue'
+            }, {
+                name: 'was here',
+                data: this.randomData(),
+                color: 'lightblue'
+            }],
+            padding: {top: 0.4}
+        });
+
+        this.chart.groups = [
+            'ROI',
+            'REV'
+        ];
+
+        this.chart.render();
+        this.looper();
+    },
+
+    changeData : function(){
+        this.chart.series[0].data = this.randomData();
+        this.chart.series[1].data = this.randomData();
+        this.chart.update();
+    },
+
+    randomData: function(){
+        return [{ x: 0, y: Math.round(Math.random() * 20)}, { x: 1, y: Math.round(Math.random() * 20) }];
+    }
+
+});
 $w.views.Footer = $w.views.Abstract.extend({
 
     events : {
@@ -1703,12 +2295,15 @@ $w.views.Header = $w.views.Abstract.extend({
     
     getViewData : function(){
         var name = '';
+        var profileImageUrl = '';
         if( $w.Application.user() ){
             name = $w.Application.user().get('displayName');
+            profileImageUrl = $w.Application.user().getProfilePicture();
         }
         
         var data = {
-            name : name
+            name : name,
+            profileImageUrl : profileImageUrl
         };
         return data;
     }

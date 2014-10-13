@@ -55,11 +55,10 @@ a:hover{
     vertical-align: middle;
 }
 
-.form > div > label, .form > div > .left-wrapper{
+.form > div label, .form > div .left-wrapper{
     display: inline-block;
     text-align: right;
     padding-right: 5px;
-    font-weight: bold;
     color: #636364;
 }
 
@@ -76,6 +75,18 @@ a:hover{
     text-align: left;
     padding-left: 5px;
 }
+
+button{
+    background-color: #3EA8A4;
+    color: #fff;
+    border: none;
+}
+
+.ui-control.radiobutton .control-container{
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
 .fcg-ui.window {
     background: #ebebeb; 
     z-index: 2001; 
@@ -135,7 +146,7 @@ html{
     color: #373737;
 }
 body{
-    background-color: #BED3FF;
+    background-color: #C9D4F5;
     margin: 0 20px 20px 20px;
 }
 #overlay {
@@ -169,24 +180,21 @@ body{
 }
 
 .content-box{
-    border: 3px solid #CEDEFF;
+    border: 4px solid #A5C1D4;
     border-radius: 8px;
     background-color: white;
-    padding: 10px;
+    padding: 20px;
     display: inline-block;
     text-align: left;
 }
 
-button{
-    background-color: #3EA8A4;
-    color: #fff;
-    border: none;
-}
-
 h3{
-    color: #6a94b0;
+    color: #547D99;
 }
 
+#layout{
+    min-width: 800px;
+}
 #initializing .text{
     margin: 100px 0 0 0;
     color: #6a94b0;
@@ -207,7 +215,12 @@ h3{
     display: inline-block;
     vertical-align: top;
 }
-#user-bar > *{
+#user-bar > img{
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 10px 0 0;
+}
+#user-bar > span, #user-bar > a{
     display: inline-block;
     color: #A6823B;
     margin: 0 0 10px 0;
@@ -226,6 +239,54 @@ h3{
 }
 #footer a{
     color: #6a94b0;
+}
+.chart-component.area{
+    position: relative;
+}
+.chart-component.area .chart, .chart-component.area .x-axis{
+    position: relative;
+    left: 40px;
+}
+.chart-component.area .x-axis{
+    width: 700px;
+}
+.chart-component.area .y-axis{
+    position: absolute;
+    top: 40px;
+    bottom: 0;
+    width: 40px;
+}
+
+.chart-component.area h3{
+    text-align: center;
+}
+.create-form{
+    min-width: 1000px;
+}
+
+.create-form .details{
+    display: inline-block;
+    width: 250px;
+    border-right: 2px dashed #cccccc;
+    height: 500px;
+    margin: 0 30px 0 0;
+}
+
+.create-form input[type="text"]{
+    width: 200px;
+}
+.create-form .form > div{
+    margin: 0 0 20px 0;
+}
+
+.create-form .chart-container{
+    display: inline-block;
+    vertical-align: top;
+    min-width: 600px;
+}
+
+.create-form .ui-control.radiobutton{
+    margin: 10px 0;
 }
 .donut_3d path.slice{
     stroke-width:2px;
@@ -257,6 +318,9 @@ h3{
 }
 #login-form .options a{
     text-decoration: none;
+}
+#login-form .helper{
+    color: #888888;
 }
 #logout-box{
     margin-top: 50px;
