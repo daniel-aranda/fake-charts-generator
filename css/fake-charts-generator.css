@@ -288,6 +288,21 @@ h3{
 .create-form .ui-control.radiobutton{
     margin: 10px 0;
 }
+
+.create-form .annotation{
+    position: absolute;
+}
+.create-form .annotation > .dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #A5C1D4;
+}
+
+.create-form .annotation > span{
+    color: #7c7c7c;
+}
 .donut_3d path.slice{
     stroke-width:2px;
 }
