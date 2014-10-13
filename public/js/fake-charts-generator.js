@@ -523,7 +523,7 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                 .attr("cy", y)
                 .attr("r", 5)
                 .attr("fill", 'white')
-                .attr("stroke", serie.color)
+                .attr("stroke", '#DBCD35')
                 .attr("stroke-width", '3')
                 .attr("class", 'campaign');
             if( this.animate ){
@@ -1664,7 +1664,7 @@ $w.models.User = $w.models.Abstract.extend({
 $w.models.charts.Chart = $w.models.Abstract.extend({
 
     defaults : {
-        name : 'untitled'
+        name : ''
     },
 
     validations :{
@@ -2101,12 +2101,28 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
         this.controls.name.$control.focus();
 
         this.invalidateChart();
+        this.calculateAnnotationPoints();
         this.invalidateAnnotations();
 
     },
 
+    annotationsX : null,
+    annotationsY : null,
+
+    calculateAnnotationPoints : function(){
+        this.annotationsX = Math.round(this.$('.chart-container').offset().left);
+        this.annotationsY = Math.round(this.$('.chart-container').offset().top);
+    },
+
     invalidateAnnotations : function(){
-        
+        this.addAnnotation(40, 30, 'daniel');
+    },
+
+    addAnnotation : function(x, y, name){
+        var annotation = $w.tpl.getTemplate("charts_annotation", {name: name});
+        this.$('.annotations').append(annotation);
+        this.$('.annotation').css('top', String(this.annotationsY + x) + 'px');
+        this.$('.annotation').css('left', String(this.annotationsX + y) + 'px');
     },
 
     invalidateChart : function(){

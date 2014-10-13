@@ -1,7 +1,7 @@
 $w.models.charts.Chart = $w.models.Abstract.extend({
 
     defaults : {
-        name : 'untitled'
+        name : ''
     },
 
     validations :{

@@ -28,12 +28,28 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
         this.controls.name.$control.focus();
 
         this.invalidateChart();
+        this.calculateAnnotationPoints();
         this.invalidateAnnotations();
 
     },
 
+    annotationsX : null,
+    annotationsY : null,
+
+    calculateAnnotationPoints : function(){
+        this.annotationsX = Math.round(this.$('.chart-container').offset().left);
+        this.annotationsY = Math.round(this.$('.chart-container').offset().top);
+    },
+
     invalidateAnnotations : function(){
-        
+        this.addAnnotation(40, 30, 'daniel');
+    },
+
+    addAnnotation : function(x, y, name){
+        var annotation = $w.tpl.getTemplate("charts_annotation", {name: name});
+        this.$('.annotations').append(annotation);
+        this.$('.annotation').css('top', String(this.annotationsY + x) + 'px');
+        this.$('.annotation').css('left', String(this.annotationsX + y) + 'px');
     },
 
     invalidateChart : function(){

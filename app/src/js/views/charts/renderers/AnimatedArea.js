@@ -87,7 +87,7 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                 .attr("cy", y)
                 .attr("r", 5)
                 .attr("fill", 'white')
-                .attr("stroke", serie.color)
+                .attr("stroke", '#DBCD35')
                 .attr("stroke-width", '3')
                 .attr("class", 'campaign');
             if( this.animate ){

@@ -26,3 +26,14 @@
 .create-form .ui-control.radiobutton{
     margin: 10px 0;
 }
+
+.create-form .annotation{
+    position: absolute;
+}
+.create-form .annotation > .dot{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #A5C1D4;
+}
