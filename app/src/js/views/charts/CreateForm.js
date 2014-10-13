@@ -65,6 +65,9 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
             case 'area':
                 this.chart = new $w.views.charts.Area({model : this.model});
                 break;
+            case 'rectangles':
+                this.chart = new $w.views.charts.RoundedRectangles({model : this.model});
+                break;
             default:
                 throw 'Invalid chart type: ' + chartType;
         }
