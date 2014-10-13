@@ -28,6 +28,11 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
         this.controls.name.$control.focus();
 
         this.invalidateChart();
+        this.invalidateAnnotations();
+
+    },
+
+    invalidateAnnotations : function(){
 
     },
 

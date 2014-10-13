@@ -2,6 +2,7 @@ $w.views.charts.Abstract = $w.views.Abstract.extend({
 
     template : 'charts_empty',
     active: true,
+    looperInterval: 3000,
 
     events : function(events){
         var this_events = {
@@ -15,7 +16,7 @@ $w.views.charts.Abstract = $w.views.Abstract.extend({
     },
 
     looper : function(){
-        setTimeout(this.looperStep, 3000);
+        setTimeout(this.looperStep, this.looperInterval);
     },
 
     looperStep : function(){

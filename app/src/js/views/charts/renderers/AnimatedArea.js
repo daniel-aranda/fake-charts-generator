@@ -67,14 +67,9 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
         var dotSize = 5;
         var renderSerie = d3.select(this.graph.element).selectAll('.item-renderer');
 
-        var dataFilter = d.filter( function(d) { return d.campaigns; } );
+        var dataFilter = d.filter( function(d) { return d.star; } );
 
-        var icon = '/assets/images/icons/realtime_dashboard/';
-
-        if( !serie.campaignIcon ){
-            return null;
-        }
-        icon += serie.campaignIcon;
+        var icon = 'img/icons/star.png';
 
         _.each(dataFilter, function(item, index){
             var x = graph.x(item.x);
@@ -95,7 +90,7 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                 .attr("stroke", serie.color)
                 .attr("stroke-width", '3')
                 .attr("class", 'campaign');
-            if( graph.animateCampaigns ){
+            if( true ){
                 circle.
                     style('opacity', 0)
                     .transition()
@@ -104,31 +99,28 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                     .style('opacity', 1);
             }
 
-
-            if( graph.campaignIconEnabled ){
-                 item = renderSerie
-                    .append("svg:image")
-                    .style('pointer-events', 'all')
-                    .attr("xlink:href", icon)
-                    .attr("width", width)
-                    .attr("height", height)
-                    .attr("class", 'campaign');
-                if( graph.animateCampaigns ){
-                    item
-                        .attr("x", img_x)
-                        .attr("y", 0)
-                        .attr("opacity", 0)
-                        .transition()
-                        .delay(300 + index * 600)
-                        .duration(1000)
-                        .attr("opacity", 1)
-                        .attr("y", img_y);
-                }else{
-                    item
-                        .attr("x", img_x)
-                        .attr("opacity", 1)
-                        .attr("y", img_y);
-                }
+            item = renderSerie
+                .append("svg:image")
+                .style('pointer-events', 'all')
+                .attr("xlink:href", icon)
+                .attr("width", width)
+                .attr("height", height)
+                .attr("class", 'campaign');
+            if( true ){
+                item
+                    .attr("x", img_x)
+                    .attr("y", 0)
+                    .attr("opacity", 0)
+                    .transition()
+                    .delay(300 + index * 600)
+                    .duration(1000)
+                    .attr("opacity", 1)
+                    .attr("y", img_y);
+            }else{
+                item
+                    .attr("x", img_x)
+                    .attr("opacity", 1)
+                    .attr("y", img_y);
             }
 
         }, this);

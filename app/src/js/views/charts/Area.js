@@ -4,6 +4,7 @@ $w.views.charts.Area = $w.views.charts.Abstract.extend({
     chartNode: null,
     template: 'charts_area',
     className: 'chart-component area',
+    looperInterval: 7000,
 
     afterRender : function(){
         this._super();
@@ -35,12 +36,12 @@ $w.views.charts.Area = $w.views.charts.Abstract.extend({
         return [
             { x: 0, y: Math.round(Math.random() * 50)},
             { x: 1, y: Math.round(Math.random() * 50)},
-            { x: 2, y: Math.round(Math.random() * 50)},
+            { x: 2, y: Math.round(Math.random() * 50), star: true},
             { x: 3, y: Math.round(Math.random() * 50) },
             { x: 4, y: Math.round(Math.random() * 50) },
-            { x: 5, y: Math.round(Math.random() * 50) },
+            { x: 5, y: Math.round(Math.random() * 50), star: true},
             { x: 6, y: Math.round(Math.random() * 50) },
-            { x: 7, y: Math.round(Math.random() * 50) },
+            { x: 7, y: Math.round(Math.random() * 50), star: true},
             { x: 8, y: Math.round(Math.random() * 50) }
         ];
     },
