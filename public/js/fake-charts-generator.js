@@ -526,7 +526,7 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                 .attr("stroke", serie.color)
                 .attr("stroke-width", '3')
                 .attr("class", 'campaign');
-            if( true ){
+            if( this.animate ){
                 circle.
                     style('opacity', 0)
                     .transition()
@@ -542,7 +542,7 @@ Rickshaw.Graph.Renderer.AnimatedArea = Rickshaw.Class.create( Rickshaw.Graph.Ren
                 .attr("width", width)
                 .attr("height", height)
                 .attr("class", 'campaign');
-            if( true ){
+            if( this.animate ){
                 item
                     .attr("x", img_x)
                     .attr("y", 0)
