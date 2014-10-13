@@ -2115,7 +2115,7 @@ $w.views.charts.CreateForm = $w.controls.UIForm.extend({
     },
 
     invalidateAnnotations : function(){
-        this.addAnnotation(40, 30, 'daniel');
+//        this.addAnnotation(40, 30, $w.Application.user().get('displayName') || 'daniel');
     },
 
     addAnnotation : function(x, y, name){

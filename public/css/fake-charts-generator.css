@@ -299,6 +299,10 @@ h3{
     border-radius: 10px;
     background-color: #A5C1D4;
 }
+
+.create-form .annotation > span{
+    color: #7c7c7c;
+}
 .donut_3d path.slice{
     stroke-width:2px;
 }
